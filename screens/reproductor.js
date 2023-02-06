@@ -17,7 +17,7 @@ const Player = (props) => {
             .catch(error => console.error(error))
     }
     useEffect(() => {
-         props.navigation.setOptions({ title: `Episodio ${props.route.params.episode}`, headerRight: () => (<Icon name="download" size={35} onPress={() => getAnimeUrl().then()} />) })
+         props.navigation.setOptions({ title: `Episodio ${props.route.params.episode}`})
         axios.get(`http://192.168.1.37:3002/url/${props.route.params.anime.substring(29,props.route.params.anime.length-11)}/${props.route.params.episode}`)
             .then(response => {setUrl(response.data);setLoading(false)})
              .catch(error => console.error(error))
@@ -37,8 +37,10 @@ const Player = (props) => {
       ) :
      (
         <>
-        {console.log(url)}
-              <WebView  mediaPlaybackRequiresUserAction={false}
+        <Icon color={"white"} name="arrow-left" size={35} style={styles.icon}/>
+        <Icon color={"white"} style={styles.iconLeft} name="download" size={35} onPress={() => getAnimeUrl().then()} />
+              <WebView  onTouchStart={(e) => {e.nativeEvent.locationX>400 & e.nativeEvent.locationX
+               }} mediaPlaybackRequiresUserAction={false}
         allowsInlineMediaPlayback={true}
         onLoadEnd={() => setLoad(true)}
         allowsFullscreenVideo={true} source={{ uri: url }} /> 
@@ -56,4 +58,19 @@ const styles = StyleSheet.create({
         bottom: 0,
         right: 0,
     },
+    icon : {
+        zIndex : 10000,
+        position: "absolute",
+        margin: "auto",
+        left: 0,
+        right:0
+    },
+    iconLeft : {
+        zIndex : 10000,
+        position: "absolute",
+        margin: "auto",
+        left: 0,
+        right:0
+        ,textAlign : "right"
+    }
 })
