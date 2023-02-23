@@ -3,14 +3,15 @@ import {ScrollView, ActivityIndicator } from "react-native"
 import axios from "axios";
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ListItem, Image } from '@rneui/themed'
-import Icon from "react-native-vector-icons/EvilIcons";
+import { API } from "../api";
 
 const List = (props) => {
+  console.log(API)
   const [series, setSeries] = useState([])
   const [loading, setLoading] = useState(true)
   useEffect(() => {
-    props.navigation.setOptions({ title: "Anime", headerRight: () => (<Icon name="search" size={35} onPress={() => props.navigation.navigate("Search")} />) })
-    axios.get("http://192.168.1.37:3002/lastAnime")
+    props.navigation.setOptions({headerShown : false, title: "Anime", headerRight: () => (<Icon name="search" size={35} onPress={() => props.navigation.navigate("Search")} />) })
+    axios.get(`${API}/lastAnime`)
       .then(response => { setSeries(response.data);setLoading(false) })
       .catch(error => console.error(error))
   }, []);

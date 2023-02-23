@@ -6,9 +6,9 @@ import { ListItem,Image,Card,Button,Icon } from "@rneui/themed";
 import { useIsFocused } from "@react-navigation/native";
 import Star from "react-native-star-view/lib/Star";
 import { FlatGrid } from "react-native-super-grid";
+import { API } from "../api";
 
 const Anime = (props) => {
-
     const isFocused = useIsFocused()
     const [episodes,setEpisodes] = useState([])
     const [info,setInfo] = useState({})
@@ -16,7 +16,7 @@ const Anime = (props) => {
     const [empty,IsEmpty] = useState(false)
     useEffect(() => {
       props.navigation.setOptions({ title : props.route.params.name})
-       axios.get(`http://192.168.1.37:3002/episodes/${props.route.params.url ?props.route.params.url.substring(31,props.route.params.url.length-12) :props.route.params.anime.substring(20,props.route.params.anime.length-3)}`)
+       axios.get(`${API}/episodes/${props.route.params.url ?props.route.params.url.substring(31,props.route.params.url.length-12) :props.route.params.anime.substring(20,props.route.params.anime.length-3)}`)
        .then(response => {console.log(response.data);
         if (response.data !== []) {
           setEpisodes(response.data.episodes);
@@ -53,7 +53,7 @@ const Anime = (props) => {
   <Text style={{marginBottom : 10,color : "#ffdf00",fontSize : 30}}>{info.score}</Text>
 </Card>
          {episodes.map((episode,i) => 
-         <ListItem key={i} bottomDivider>
+         <ListItem style={styles.episodeContainer} key={i} bottomDivider>
          <Image source={{uri : episode.imagen}} style={{ width: 100, height: 100 }} onPress={() => props.navigation.navigate("Player", {anime : episode.enlace,episode : i+1})}/>
          <ListItem.Content>
            <ListItem.Title>episodio {i+1}</ListItem.Title>
@@ -68,6 +68,11 @@ const Anime = (props) => {
     gridView: {
       marginTop: 10,
       flex: 1,
+    },
+    episodeContainer : {
+      display : "flex",
+      alignItems : "center",
+      justifyContent : "center"
     },
     itemContainer: {
       justifyContent: 'flex-end',

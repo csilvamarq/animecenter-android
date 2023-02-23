@@ -3,21 +3,28 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
+    "android": "react-native run-android --port 8082",
     "ios": "react-native run-ios",
-    "start": "react-native start",
+    "start": "react-native start --port 8082",
     "test": "jest",
     "lint": "eslint ."
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.17.11",
+    "@react-navigation/bottom-tabs": "^6.5.5",
     "@react-navigation/drawer": "^6.3.1",
     "@react-navigation/native": "^6.0.8",
     "@react-navigation/native-stack": "^6.5.0",
     "@rneui/base": "^4.0.0-rc.1",
     "@rneui/themed": "^4.0.0-rc.1",
     "axios": "^0.26.1",
+    "modal-react-native-web": "^0.2.0",
     "react": "18.1.0",
+    "react-dom": "18.1.0",
     "react-native": "0.70.6",
+    "react-native-dotenv": "^3.4.7",
+    "react-native-dropdown-picker": "^5.4.4",
+    "react-native-form-component": "^2.6.8",
     "react-native-gesture-handler": "^2.3.2",
     "react-native-reanimated": "^2.4.1",
     "react-native-safe-area-context": "^4.2.1",
@@ -27,7 +34,10 @@
     "react-native-super-grid": "^4.4.0",
     "react-native-vector-icons": "^9.1.0",
     "react-native-video": "^5.2.0",
-    "react-native-webview": "^11.18.1"
+    "react-native-view-more-text": "^2.2.0",
+    "react-native-web": "^0.18.12",
+    "react-native-webview": "^11.18.1",
+    "react-select": "^5.7.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

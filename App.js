@@ -14,6 +14,7 @@ import Anime from './screens/anime';
 import Search from './screens/search';
 import SplashScreen from 'react-native-splash-screen'
 import Player from './screens/reproductor';
+import Home from './screens/home';
 
 const Stack = createNativeStackNavigator()
 
@@ -26,7 +27,7 @@ const App  = () => {
     <NavigationContainer>
       
       <Stack.Navigator>
-      <Stack.Screen name='Lista'component={List}></Stack.Screen>
+      <Stack.Screen name='Home'component={Home}></Stack.Screen>
         <Stack.Screen name='Search' component={Search}></Stack.Screen>
         <Stack.Screen name='Player' options={{orientation : "landscape_right"}}  component={Player}></Stack.Screen>
             <Stack.Screen name='Anime' component={Anime}></Stack.Screen>

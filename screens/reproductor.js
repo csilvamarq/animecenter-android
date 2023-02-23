@@ -4,7 +4,7 @@ import { Linking,BackHandler,ActivityIndicator } from "react-native";
 import { StyleSheet } from "react-native";
 import WebView from "react-native-webview";
 import Icon from "react-native-vector-icons/Feather";
-// https://anime-app-backend-production.up.railway.app
+import { API } from "../api";
 
 const Player = (props) => {
     const [load,setLoad] = useState(false)
@@ -12,13 +12,13 @@ const Player = (props) => {
     const [url, setUrl] = useState("")
     const [loading,setLoading] = useState(true)
     const getAnimeUrl = async () => {
-        return axios.get(`http://localhost:3002/dowload/${props.route.params.anime.substring(29,props.route.params.anime.length-11)}/${props.route.params.episode}`)
+        return axios.get(`${API}/dowload/${props.route.params.anime.substring(29,props.route.params.anime.length-11)}/${props.route.params.episode}`)
             .then(response => Linking.openURL(response.data))
             .catch(error => console.error(error))
     }
     useEffect(() => {
          props.navigation.setOptions({ title: `Episodio ${props.route.params.episode}`})
-        axios.get(`http://192.168.1.37:3002/url/${props.route.params.anime.substring(29,props.route.params.anime.length-11)}/${props.route.params.episode}`)
+        axios.get(`${API}/url/${props.route.params.anime.substring(29,props.route.params.anime.length-11)}/${props.route.params.episode}`)
             .then(response => {setUrl(response.data);setLoading(false)})
              .catch(error => console.error(error))
              const backHandler = BackHandler.addEventListener(
