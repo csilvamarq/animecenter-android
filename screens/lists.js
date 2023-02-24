@@ -3,12 +3,13 @@ import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import ViewMoreText from 'react-native-view-more-text';
 import { API } from "../api";
-import { Image, TouchableHighlight, View, TextInput, Modal, StyleSheet } from "react-native";
+import {  Image,TouchableHighlight, View, TextInput, Modal, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { Button } from '@rneui/themed';
 import Icon from 'react-native-vector-icons/AntDesign'
 import { Text } from '@rneui/themed';
 import DropDownPicker from 'react-native-dropdown-picker';
+import CollapsibleView from "@eliav2/react-native-collapsible-view";
 
 const ListaAnime = (props) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -25,12 +26,12 @@ const ListaAnime = (props) => {
         setIsModalOpen(true);
     };
 
-    const handleOk = async (values) => {
+    const handleOk = async () => {
         if (lista) {
             const list = JSON.parse(lista);
             list.push({
-                name: values.nombre,
-                descripcion: values.descripcion,
+                name: name,
+                descripcion: description,
                 animes: animes,
             });
             await AsyncStorage.setItem("listas", JSON.stringify(list));
@@ -39,8 +40,8 @@ const ListaAnime = (props) => {
         } else {
             const arr = [];
             arr.push({
-                name: values.nombre,
-                descripcion: values.descripcion,
+                name: name,
+                descripcion: description,
                 animes: animes,
             });
             await AsyncStorage.setItem("listas", JSON.stringify(arr));
@@ -59,11 +60,10 @@ const ListaAnime = (props) => {
     };
 
     const onChange = (value) => {
-        const filtered = search.filter((item) => item.label === value.label)[0];
         if (animes.find((item) => item.name === value.label) === undefined) {
             setAnimes((current) => [
                 ...current,
-                { imagen: filtered.imagen, url: filtered.value, name: value.label },
+                { imagen: value.imagen, url: value.value, name: value.label },
             ]);
         }
     };
@@ -80,28 +80,34 @@ const ListaAnime = (props) => {
             });
     };
     useEffect(() => {
-        props.navigation.setOptions({ title: "Mis Listas" })
+        props.navigation.setOptions({ title: "Mis Listas",headerRight : () => <Button  onPress={showModal}>Nueva lista</Button> })
         AsyncStorage.getItem("listas").then((data) => {
             setLista(data ? JSON.parse(data).length === 0 ? null : data : null)
         })
-
     }, [])
+    useEffect(() => {
+        AsyncStorage.getItem("listas").then((data) => {
+            console.log(data)
+            setLista(data ? JSON.parse(data).length === 0 ? null : data : null)
+        })
+    },[animes])
     return (
-        <ScrollView style={{ padding: 20, display: "flex" }}>
+        <ScrollView contentContainerStyle={{ height: "100%" }}>
             {lista ? (
-                <View style={{ display: "flex", flexDirection: "column", height: "100%", width: "100%" }} >
+                <View >
                     {JSON.parse(lista).map((item) => {
-                        return <View style={{ width: "100%" }}>
-                            <Text>{item.name}  <Icon name="delete" onPress={() => {
+                        return <CollapsibleView title={item.name} >
+                            <Text h1>{item.name}  <Icon name="delete" size={30} onPress={() => {
                                 const newList = JSON.parse(lista).filter((lista) => lista.name !== item.name)
-                                localStorage.setItem("listas", JSON.stringify(newList))
+                                AsyncStorage.setItem("listas", JSON.stringify(newList)).then(() => console.log("deleted"))
                                 setLista(newList.length === 0 ? null : JSON.stringify(newList))
                             }} /></Text>
+                            <Text>{item.descripcion}</Text>
                             <View style={{ display: "flex", flexDirection: "column", height: "100%", width: "100%" }} >
                                 {item.animes.map((anime) => {
                                     return (
-                                        <View style={{ display: "flex", flexDirection: "column", padding: "2%", width: "fit-content", width: `${100 / item.animes.length}%` }}>
-                                            <View style={{ display: "flex", flexDirection: "column", height: "100%" }} ><View style={{ width: "60%" }}><ViewMoreText
+                                        <View >
+                                            <View  ><View ><ViewMoreText
                                                 numberOfLines={2}
                                                 renderViewMore="Leer mas"
                                                 renderViewLess="Leer menos"
@@ -109,16 +115,16 @@ const ListaAnime = (props) => {
                                                 <Text>{anime.name}</Text>
                                             </ViewMoreText>
                                             </View>
-                                                <View style={{ width: "40%" }}>
-                                                    <Icon name="delete" style={{ cursor: "pointer" }} size={40} />
-                                                </View>
                                             </View>
-                                            <Image onPress={() => { props.navigation.navigate("/anime", { state: { name: anime.name, enlace: anime.url, image: anime.imagen } }) }} preview={false} height={"100%"} width={"70%"} src={anime.imagen} />
+                                            <Image
+                                                source={{uri: anime.imagen}}
+                                                style={{width: "100%", height: 400}}
+                                            />
                                         </View>
                                     )
                                 })}
                             </View>
-                        </View>
+                        </CollapsibleView>
                     })}
                 </View>
             ) : (
@@ -131,19 +137,22 @@ const ListaAnime = (props) => {
                     <View style={style.modals} >
 
                         <View style={style.form}>
-                            <Text h1>Crear Lista <Icon name="closecircleo" onPress={() => setIsModalOpen(false)} size={20} /></Text>
+                            <Text h1>Crear Lista <Icon name="closecircleo" onPress={handleCancel} size={20} /></Text>
                             <Text style={{ textAlign: "left" }}>Nombre</Text>
                             <TextInput style={style.input} value={name} isRequired asterik onChangeText={(name) => setName(name)} />
                             <Text style={{ textAlign: "left" }}>Descripción</Text>
                             <TextInput style={style.input} value={description} isRequired asterik onChangeText={() => setDescription(description)} />
                             <Text>Animes</Text>
                             <DropDownPicker
+                            placeholder="Busca un anime"
                                 containerProps={{
-                                    height: DropDown === true ? 150 : null,
+                                    height: DropDown === true ? "50%" : null,
                                     backgroundColor: "#fff",
                                 }}
+                                searchPlaceholder="Escribe algo"
                                 searchable={true}
                                 onChangeSearchText={onSelect}
+                                onSelectItem={onChange}
                                 open={DropDown}
                                 onClose={() => setDropDown(false)}
                                 value={value}
@@ -154,51 +163,12 @@ const ListaAnime = (props) => {
                             />
                         </View>
                         <Button title="Crear Lista" onPress={handleOk} />
-                        <View style={{ display: "flex", flexDirection: "column", height: "100%", width: "100%" }} >
-                            {animes.map((item) => {
+                        <View style={{ display: "flex", flexDirection: "row", height: "100%", width: "100%" }} >
+                            {console.log(animes)}
+                            {animes.map((item,index) => {
                                 return (
-                                    <View style={{ width: "40%", padding: "2%" }}>
-                                        <View style={{ display: "flex", flexDirection: "column", height: "100%", width: "100%" }} >
-                                            <>
-                                                <View span={22}>
-                                                    <Text>
-                                                        <ViewMoreText
-                                                            numberOfLines={2}
-                                                            renderViewMore="Leer mas"
-                                                            renderViewLess="Leer menos"
-                                                        >
-                                                            <Text>{item.name}</Text>
-                                                        </ViewMoreText>
-                                                    </Text>
-                                                </View>
-                                                <View
-                                                    style={{
-                                                        flex: 1,
-                                                        display: "flex",
-                                                        flexWrap: "wrap",
-                                                        justifyContent: "center",
-                                                        alignSelf: "flex-end",
-                                                        height: "30px",
-                                                    }}
-                                                    span={2}
-                                                >
-                                                    <Icon name="delete"
-                                                        onMouseOver={() => setHover(true)}
-                                                        onMouseLeave={() => setHover(false)}
-                                                        style={{ color: hover ? "red" : "black" }}
-                                                        onPress={() => {
-                                                            setHover(false);
-                                                            setAnimes(
-                                                                animes.filter(
-                                                                    (anime) => anime.name !== item.name
-                                                                )
-                                                            );
-                                                        }}
-                                                        size={40}
-                                                    />
-                                                </View>
-                                            </>
-                                        </View>
+                                    <View style={{padding : "2%"}} key={index}>
+                                        <Text>{item.name}</Text>
                                         <TouchableHighlight onPress={() => {
                                             props.navigation.navigate("/anime", {
                                                 state: {
@@ -209,9 +179,8 @@ const ListaAnime = (props) => {
                                             });
                                         }}>
                                             <Image
-                                                src={item.imagen}
-                                                width="100%"
-                                                height="90%"
+                                                source={{uri: item.imagen}}
+                                                style={{width: 75, height: 75}}
                                             />
                                         </TouchableHighlight>
                                     </View>
@@ -227,7 +196,7 @@ const ListaAnime = (props) => {
 const style = StyleSheet.create({
     modals: {
         margin: 30,
-        height : "70%",
+        height : "100%",
         backgroundColor: 'white',
         elevation: 5,
         borderRadius: 10,
@@ -254,6 +223,13 @@ const style = StyleSheet.create({
         shadowRadius: 16.00,
 
         elevation: 24,
+    },
+    image: {
+        flex: 1,
+        aspectRatio: 0.8, 
+        resizeMode: 'cover',
+        width : 100,
+        height : 100
     }
 })
 
