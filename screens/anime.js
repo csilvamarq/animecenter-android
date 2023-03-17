@@ -54,7 +54,7 @@ const Anime = (props) => {
 </Card>
          {episodes.map((episode,i) => 
          <ListItem style={styles.episodeContainer} key={i} bottomDivider>
-         <Image source={{uri : episode.imagen}} style={{ width: 100, height: 100 }} onPress={() => props.navigation.navigate("Player", {anime : episode.enlace,episode : i+1})}/>
+         <Image source={{uri : episode.imagen}} style={{ width: 100, height: 100 }} onPress={() => props.navigation.navigate("Player", {anime : episode.enlace,episode : i+1,totalEp : episodes.length})}/>
          <ListItem.Content>
            <ListItem.Title>episodio {i+1}</ListItem.Title>
          </ListItem.Content>

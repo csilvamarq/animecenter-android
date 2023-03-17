@@ -29,7 +29,7 @@ const App  = () => {
       <Stack.Navigator>
       <Stack.Screen name='Home'component={Home}></Stack.Screen>
         <Stack.Screen name='Search' component={Search}></Stack.Screen>
-        <Stack.Screen name='Player' options={{orientation : "landscape_right"}}  component={Player}></Stack.Screen>
+        <Stack.Screen name='Player' component={Player}></Stack.Screen>
             <Stack.Screen name='Anime' component={Anime}></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
