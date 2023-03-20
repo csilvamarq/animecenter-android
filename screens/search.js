@@ -7,6 +7,8 @@ import { ListItem, Image, SearchBar } from "@rneui/themed";
 
 import Icon from "react-native-vector-icons/AntDesign";
 import { API } from "../api";
+import { useContext } from "react";
+import AppContext from "../context/appContext";
 
 const Search = (props) => {
 
@@ -14,6 +16,7 @@ const Search = (props) => {
     const [search, setSearch] = useState(false);
     const [results, setResults] = useState([]);
     const [loading, setLoading] = useState(false);
+    const {theme} = useContext(AppContext)
 
     const getSearchResults = async (text) => {
         setLoading(true)
@@ -33,14 +36,14 @@ const Search = (props) => {
         })
     return (
         <SafeAreaProvider>
-            <ScrollView>
+            <ScrollView style={{backgroundColor : theme === "dark" ? "black" : "white"}}>
                 {search ? (<>
-                    <Text> se han encontrado {results.length} resultados</Text>
+                    <Text style={{color : theme === "dark" ? "white" : "black"}}> se han encontrado {results.length} resultados</Text>
                     {results.map((serie, i) =>
-                        <ListItem key={i} bottomDivider>
+                        <ListItem containerStyle={{backgroundColor : theme === "dark" ? "black" : "white"}} key={i} bottomDivider>
                             <Image source={{ uri: serie.imagen }} style={{ width: 100, height: 100 }} onPress={() => props.navigation.navigate("Anime", { url: serie.url, name: serie.name, imagen: serie.imagen })} />
-                            <ListItem.Content>
-                                <ListItem.Title>{serie.name}</ListItem.Title>
+                            <ListItem.Content style={{backgroundColor : theme === "dark" ? "black" : "white"}}>
+                                <ListItem.Title style={{color : theme === "dark" ? "white" : "black"}}>{serie.name}</ListItem.Title>
                             </ListItem.Content>
                         </ListItem>)}
                 </>) : loading ? (<ActivityIndicator />) : null}

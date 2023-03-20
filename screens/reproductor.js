@@ -1,23 +1,23 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
-import {
-  Linking,
-  View,
-  BackHandler,
-  ActivityIndicator,
-} from 'react-native';
+import {Linking, View, BackHandler, ActivityIndicator} from 'react-native';
 import {StyleSheet} from 'react-native';
 import WebView from 'react-native-webview';
 import Icon from 'react-native-vector-icons/Feather';
 import {API} from '../api';
-import { Button } from '@rneui/base';
+import {Button} from '@rneui/base';
+import {useContext} from 'react';
+import AppContext from '../context/appContext';
 
 const Player = props => {
-  const [currentEpisode,setCurrentEpisode] = useState(props.route.params.episode)
+  const [currentEpisode, setCurrentEpisode] = useState(
+    props.route.params.episode,
+  );
   const backAction = () => props.navigation.setOptions({headerShown: true});
   const [url, setUrl] = useState('');
   const [loading, setLoading] = useState(true);
-  const lastIndex = props.route.params.anime.lastIndexOf(`-episodio`)
+  const {theme} = useContext(AppContext);
+  const lastIndex = props.route.params.anime.lastIndexOf(`-episodio`);
   const getAnimeUrl = async () => {
     return axios
       .get(
@@ -30,34 +30,51 @@ const Player = props => {
       .catch(error => console.error(error));
   };
   useEffect(() => {
-    props.navigation.setOptions({title: `Episodio ${currentEpisode}`,
-    headerRight: () => (
-      <View style={{display: 'flex', flexDirection: 'row'}}>
+    props.navigation.setOptions({
+      title: `Episodio ${currentEpisode}`,
+      headerTitleStyle: {color: theme === 'dark' ? 'white' : 'black'},
+      headerStyle: {backgroundColor: theme === 'dark' ? 'black' : 'white'},
+      headerRight: () => (
         <View style={{display: 'flex', flexDirection: 'row'}}>
-          <Button type="clear" onPress={() => {
+          <View style={{display: 'flex', flexDirection: 'row'}}>
+            <Button
+              type="clear"
+              onPress={() => {
                 if (currentEpisode > 1) {
-                  setCurrentEpisode(currentEpisode -1);
+                  setCurrentEpisode(currentEpisode - 1);
                 }
-          }}  disabled={currentEpisode <2 ? true : false} title="Prev" />
-          <Button type="clear" onPress={() => {
-               if (currentEpisode < props.route.params.totalEp) {
+              }}
+              disabled={currentEpisode < 2 ? true : false}
+              title="Prev"
+            />
+            <Button
+              type="clear"
+              onPress={() => {
+                if (currentEpisode < props.route.params.totalEp) {
                   setCurrentEpisode(currentEpisode + 1);
                 }
-          }} disabled={currentEpisode< props.route.params.totalEp ? false : true} title="Next" />
+              }}
+              disabled={
+                currentEpisode < props.route.params.totalEp ? false : true
+              }
+              title="Next"
+            />
+          </View>
+          <Icon
+            color={theme === 'dark' ? 'white' : 'black'}
+            name="download"
+            size={35}
+            onPress={() => getAnimeUrl().then()}
+          />
         </View>
-        <Icon
-          name="download"
-          size={35}
-          onPress={() => getAnimeUrl().then()}
-        />
-      </View>
-    ),
-  })
-  },[])
+      ),
+    });
+  }, []);
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     props.navigation.setOptions({
-        title: `Episodio ${currentEpisode}`})
+      title: `Episodio ${currentEpisode}`,
+    });
     axios
       .get(
         `${API}/url/${props.route.params.anime.substring(
@@ -75,10 +92,13 @@ const Player = props => {
       backAction,
     );
     return () => backHandler.remove();
-  },[currentEpisode])
+  }, [currentEpisode]);
   return loading ? (
     <>
-      <ActivityIndicator size={40} />
+      <ActivityIndicator
+        style={{backgroundColor: theme === 'dark' ? 'black' : 'white'}}
+        size={40}
+      />
     </>
   ) : (
     <>

@@ -6,33 +6,38 @@
  * @flow strict-local
  */
 import 'react-native-gesture-handler';
-import { NavigationContainer } from '@react-navigation/native';
-import React, { useEffect } from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import List from './screens/list'
+import {NavigationContainer} from '@react-navigation/native';
+import React, {useEffect} from 'react';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import List from './screens/list';
 import Anime from './screens/anime';
 import Search from './screens/search';
-import SplashScreen from 'react-native-splash-screen'
+import SplashScreen from 'react-native-splash-screen';
 import Player from './screens/reproductor';
 import Home from './screens/home';
+import AppContext from './context/appContext';
+import {useState} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Stack = createNativeStackNavigator()
+const Stack = createNativeStackNavigator();
 
-const App  = () => {
-
+const App = () => {
+  const [theme, setTheme] = useState('light');
   useEffect(() => {
-    SplashScreen.hide()
-  })
+    AsyncStorage.getItem('theme').then(value => value !==null && setTheme(value));
+    SplashScreen.hide();
+  });
   return (
-    <NavigationContainer>
-      
-      <Stack.Navigator>
-      <Stack.Screen name='Home'component={Home}></Stack.Screen>
-        <Stack.Screen name='Search' component={Search}></Stack.Screen>
-        <Stack.Screen name='Player' component={Player}></Stack.Screen>
-            <Stack.Screen name='Anime' component={Anime}></Stack.Screen>
-      </Stack.Navigator>
-    </NavigationContainer>
+    <AppContext.Provider value={{theme,setTheme}}>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{contentStyle : {backgroundColor :  theme === "dark" ? "black" : "white"}}}>
+          <Stack.Screen  name="Home" component={Home}></Stack.Screen>
+          <Stack.Screen name="Search" component={Search}></Stack.Screen>
+          <Stack.Screen name="Player" component={Player}></Stack.Screen>
+          <Stack.Screen name="Anime" component={Anime}></Stack.Screen>
+        </Stack.Navigator>
+      </NavigationContainer>
+    </AppContext.Provider>
   );
 };
 
