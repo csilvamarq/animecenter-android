@@ -8,6 +8,7 @@ import {API} from '../api';
 import {Button} from '@rneui/base';
 import {useContext} from 'react';
 import AppContext from '../context/appContext';
+import KeepAwake from '@sayem314/react-native-keep-awake';
 
 const Player = props => {
   const [currentEpisode, setCurrentEpisode] = useState(
@@ -103,10 +104,12 @@ const Player = props => {
   ) : (
     <>
       <WebView
+      thirdPartyCookiesEnabled={false}
         mediaPlaybackRequiresUserAction={false}
         allowsFullscreenVideo={true}
         source={{uri: url}}
       />
+      <KeepAwake />
     </>
   );
 };

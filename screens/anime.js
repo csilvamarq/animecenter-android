@@ -18,6 +18,7 @@ const Anime = (props) => {
     const [empty,IsEmpty] = useState(false)
     const {theme} = useContext(AppContext)
     useEffect(() => {
+      console.log(props.route.params.anime)
       props.navigation.setOptions({ title : props.route.params.name, headerTitleStyle: { color: theme === "dark" ? "white" : "black" },
       headerStyle: { backgroundColor: theme === "dark" ? "black" : "white" },})
        axios.get(`${API}/episodes/${props.route.params.url ?props.route.params.url.substring(31,props.route.params.url.length-12) :props.route.params.anime.substring(20,props.route.params.anime.length-3)}`)
