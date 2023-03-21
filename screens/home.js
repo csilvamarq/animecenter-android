@@ -9,6 +9,7 @@ import Lists from "./lists";
 import { View } from "react-native";
 import { useContext } from "react";
 import AppContext from "../context/appContext";
+import Series from "./series";
 
 const Home = (props) => {
     const [active, setActive] = useState("List")
@@ -25,6 +26,12 @@ const Home = (props) => {
                     navigation.navigate("List")
                 }
             })} options={{ tabBarStyle : {backgroundColor : theme === "dark" ? "black" : "white"}, tabBarIcon: () => <Icon color={theme === "dark" ? "white" : "black"} name="play" size={35} /> }} name="List" component={List} />
+             <Tab.Screen listeners={({ navigation, route }) => ({
+                tabPress: e => {
+                    setActive("List")
+                    navigation.navigate("List")
+                }
+            })} options={{ tabBarStyle : {backgroundColor : theme === "dark" ? "black" : "white"}, tabBarIcon: () => <Icon1 color={theme === "dark" ? "white" : "black"} name="picture-o" size={35} /> }} name="Series" component={Series} />
             <Tab.Screen listeners={({ navigation, route }) => ({
                 tabPress: e => {
                     setActive("Search")
