@@ -94,6 +94,10 @@ const Player = props => {
     );
     return () => backHandler.remove();
   }, [currentEpisode]);
+  const injectedJavaScript = `var element = document.getElementsByTagName("iframe"), index;
+  for (index = element.length - 1; index >= 0; index--) {
+      element[index].parentNode.removeChild(element[index]);
+  }`
   return loading ? (
     <>
       <ActivityIndicator
@@ -106,6 +110,7 @@ const Player = props => {
       <WebView
       thirdPartyCookiesEnabled={false}
         mediaPlaybackRequiresUserAction={false}
+        injectedJavaScript={injectedJavaScript}
         allowsFullscreenVideo={true}
         source={{uri: url}}
       />
