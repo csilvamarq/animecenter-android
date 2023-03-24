@@ -23,13 +23,15 @@ const Anime = props => {
   const [loading, setLoading] = useState(true);
   const [empty, IsEmpty] = useState(false);
   const {theme} = useContext(AppContext);
+  const [episodesCount, setEpisodesCount] = useState(1);
   useEffect(() => {
-    console.log(props.route.params.anime);
+    setEpisodes([])
     props.navigation.setOptions({
       title: props.route.params.name,
       headerTitleStyle: {color: theme === 'dark' ? 'white' : 'black'},
       headerStyle: {backgroundColor: theme === 'dark' ? 'black' : 'white'},
     });
+    console.log(episodesCount)
     axios
       .get(
         `${API}/episodes/${
@@ -42,7 +44,7 @@ const Anime = props => {
                 20,
                 props.route.params.anime.length - 3,
               )
-        }`,
+        }/${episodesCount}`,
       )
       .then(response => {
         console.log(response.data);
@@ -56,7 +58,7 @@ const Anime = props => {
         }
       })
       .catch(error => console.error(error));
-  }, [isFocused]);
+  }, [episodesCount]);
   return loading ? (
     <View>
       <ActivityIndicator
@@ -147,12 +149,16 @@ const Anime = props => {
               style={{backgroundColor: theme === 'dark' ? 'black' : 'white'}}>
               <ListItem.Title
                 style={{color: theme === 'dark' ? 'white' : 'black'}}>
-                episodio {i + 1}
+                episodio {episode.enlace.substring(episode.enlace.length - 1,episode.enlace.length)}
               </ListItem.Title>
             </ListItem.Content>
           </ListItem>
         ))}
       </ScrollView>
+      <View style={{display : "flex",flexDirection : "row",justifyContent : "center"}} >
+      <Button disabled={episodesCount>1 ? false : true} onPress={() => episodesCount>1 && setEpisodesCount(episodesCount-1)}>Anterior</Button>
+        <Button onPress={() => setEpisodesCount(episodesCount+1)}>Siguiente</Button>
+      </View>
     </SafeAreaProvider>
   );
 };
