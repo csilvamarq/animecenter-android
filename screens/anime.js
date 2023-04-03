@@ -20,36 +20,35 @@ const Anime = props => {
   const isFocused = useIsFocused();
   const [episodes, setEpisodes] = useState([]);
   const [info, setInfo] = useState({});
+  const [pages, setPages] = useState(0);
   const [loading, setLoading] = useState(true);
   const [empty, IsEmpty] = useState(false);
   const {theme} = useContext(AppContext);
   const [episodesCount, setEpisodesCount] = useState(1);
+  const lastIndex =
+    props.route.params.url !== undefined
+      ? props.route.params.url.lastIndexOf(`-sub`)
+      : props.route.params.anime.lastIndexOf(`-episodio`);
   useEffect(() => {
-    setEpisodes([])
+    setEpisodes([]);
     props.navigation.setOptions({
       title: props.route.params.name,
       headerTitleStyle: {color: theme === 'dark' ? 'white' : 'black'},
       headerStyle: {backgroundColor: theme === 'dark' ? 'black' : 'white'},
     });
-    console.log(episodesCount)
     axios
       .get(
         `${API}/episodes/${
           props.route.params.url
-            ? props.route.params.url.substring(
-                31,
-                props.route.params.url.length - 12,
-              )
-            : props.route.params.anime.substring(
-                20,
-                props.route.params.anime.length - 3,
-              )
+            ? props.route.params.url.substring(31, lastIndex)
+            : props.route.params.anime.substring(29, lastIndex)
         }/${episodesCount}`,
       )
       .then(response => {
-        console.log(response.data);
+        console.log(response.data.episodes);
         if (response.data !== []) {
           setEpisodes(response.data.episodes);
+          setPages(response.data.pages);
           setInfo(response.data.info);
           setLoading(false);
           IsEmpty(false);
@@ -140,8 +139,8 @@ const Anime = props => {
               onPress={() =>
                 props.navigation.navigate('Player', {
                   anime: episode.enlace,
-                  episode: i + 1,
-                  totalEp: episodes.length,
+                  episode: (episodesCount - 1) * 20 + i + 1,
+                  totalEp: pages*20,
                 })
               }
             />
@@ -149,16 +148,34 @@ const Anime = props => {
               style={{backgroundColor: theme === 'dark' ? 'black' : 'white'}}>
               <ListItem.Title
                 style={{color: theme === 'dark' ? 'white' : 'black'}}>
-                episodio {episode.enlace.substring(episode.enlace.length - 1,episode.enlace.length)}
+                episodio{' '}
+                {(episodesCount - 1) * 20 + i + 1}
               </ListItem.Title>
             </ListItem.Content>
           </ListItem>
         ))}
-      </ScrollView>
-      <View style={{display : "flex",flexDirection : "row",justifyContent : "center"}} >
-      <Button disabled={episodesCount>1 ? false : true} onPress={() => episodesCount>1 && setEpisodesCount(episodesCount-1)}>Anterior</Button>
-        <Button onPress={() => setEpisodesCount(episodesCount+1)}>Siguiente</Button>
+         <View
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'center',
+        }}>
+        <Button
+          disabled={episodesCount > 1 ? false : true}
+          onPress={() =>
+            episodesCount > 1 && setEpisodesCount(episodesCount - 1)
+          }>
+          Anterior
+        </Button>
+        <Button
+        disabled={ episodesCount < pages ? false:true}
+          onPress={() =>
+            episodesCount < pages && setEpisodesCount(episodesCount + 1)
+          }>
+          Siguiente
+        </Button>
       </View>
+      </ScrollView>
     </SafeAreaProvider>
   );
 };
