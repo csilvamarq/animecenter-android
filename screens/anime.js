@@ -137,7 +137,7 @@ const Anime = props => {
               source={{uri: episode.imagen}}
               style={{width: 100, height: 100}}
               onPress={() =>
-                props.navigation.navigate('Player', {
+                props.navigation.navigate('OptionSelector', {
                   anime: episode.enlace,
                   episode: (episodesCount - 1) * 20 + i + 1,
                   totalEp: pages*20,

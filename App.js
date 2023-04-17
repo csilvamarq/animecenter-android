@@ -18,6 +18,7 @@ import Home from './screens/home';
 import AppContext from './context/appContext';
 import {useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import OptionSelector from './screens/option';
 
 const Stack = createNativeStackNavigator();
 
@@ -33,6 +34,7 @@ const App = () => {
         <Stack.Navigator screenOptions={{contentStyle : {backgroundColor :  theme === "dark" ? "black" : "white"}}}>
           <Stack.Screen  name="Home" component={Home}></Stack.Screen>
           <Stack.Screen name="Search" component={Search}></Stack.Screen>
+          <Stack.Screen name="OptionSelector" component={OptionSelector}></Stack.Screen>
           <Stack.Screen name="Player" component={Player}></Stack.Screen>
           <Stack.Screen name="Anime" component={Anime}></Stack.Screen>
         </Stack.Navigator>

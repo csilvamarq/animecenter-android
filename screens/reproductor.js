@@ -84,7 +84,7 @@ const Player = props => {
         )}/${currentEpisode}`,
       )
       .then(response => {
-        setUrl(response.data);
+        setUrl(response.data[props.route.params.url]);
         setLoading(false);
       })
       .catch(error => console.error(error));
