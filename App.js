@@ -19,6 +19,7 @@ import AppContext from './context/appContext';
 import {useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import OptionSelector from './screens/option';
+import Login from './screens/login';
 
 const Stack = createNativeStackNavigator();
 
@@ -32,6 +33,7 @@ const App = () => {
     <AppContext.Provider value={{theme,setTheme}}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{contentStyle : {backgroundColor :  theme === "dark" ? "black" : "white"}}}>
+          <Stack.Screen name='Login' component={Login}></Stack.Screen>
           <Stack.Screen  name="Home" component={Home}></Stack.Screen>
           <Stack.Screen name="Search" component={Search}></Stack.Screen>
           <Stack.Screen name="OptionSelector" component={OptionSelector}></Stack.Screen>

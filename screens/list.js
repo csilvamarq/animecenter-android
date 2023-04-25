@@ -7,7 +7,6 @@ import { API } from "../api";
 import AppContext from "../context/appContext";
 
 const List = (props) => {
-  console.log(API)
   const [series, setSeries] = useState([])
   const [loading, setLoading] = useState(true)
   const {theme} = useContext(AppContext)

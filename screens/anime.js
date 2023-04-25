@@ -45,7 +45,6 @@ const Anime = props => {
         }/${episodesCount}`,
       )
       .then(response => {
-        console.log(response.data.episodes);
         if (response.data !== []) {
           setEpisodes(response.data.episodes);
           setPages(response.data.pages);
@@ -139,8 +138,8 @@ const Anime = props => {
               onPress={() =>
                 props.navigation.navigate('OptionSelector', {
                   anime: episode.enlace,
-                  episode: (episodesCount - 1) * 20 + i + 1,
-                  totalEp: pages*20,
+                  episode: (episodesCount - 1) * 30 + i + 1,
+                  totalEp: pages*30,
                 })
               }
             />
@@ -149,7 +148,7 @@ const Anime = props => {
               <ListItem.Title
                 style={{color: theme === 'dark' ? 'white' : 'black'}}>
                 episodio{' '}
-                {(episodesCount - 1) * 20 + i + 1}
+                {(episodesCount - 1) * 30 + i + 1}
               </ListItem.Title>
             </ListItem.Content>
           </ListItem>

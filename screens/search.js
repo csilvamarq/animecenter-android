@@ -20,8 +20,6 @@ const Search = (props) => {
 
     const getSearchResults = async (text) => {
         setLoading(true)
-        console.log("PRESSED")
-        console.log(results)
         return axios.get(`${API}/search/${text}`)
             .then(response => { setResults(response.data); setSearch(true); setLoading(false) })
             .catch(error => console.error(error))

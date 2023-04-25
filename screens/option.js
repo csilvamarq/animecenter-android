@@ -7,6 +7,7 @@ import {
   BackHandler,
   StyleSheet,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import axios from 'axios';
 import AppContext from '../context/appContext';
@@ -30,7 +31,6 @@ const OptionSelector = props => {
         const parsedData = data.map(element =>
           element.replace(/.+\/\/|www.|\..+/g, ''),
         );
-        console.log(parsedData);
         setOptions(parsedData);
       })
       .catch(error => console.error(error));
@@ -65,7 +65,7 @@ const OptionSelector = props => {
           );
         })
       ) : (
-        <Text>loading</Text>
+        <ActivityIndicator />
       )}
     </ScrollView>
   );

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "439011813979",
+    "project_id": "animecenter2-236e0",
+    "storage_bucket": "animecenter2-236e0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:439011813979:android:7d083b26a0c0d88056ad7e",
+        "android_client_info": {
+          "package_name": "com.animecenter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "439011813979-atsr027qp9u1ken5i1rmcgivvmil0s76.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.animecenter",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "439011813979-sn2u250ms59r57khpccp19gi6r3kksmd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBc5QDuhgF1IG3SpbqR3cgu9Bxzyw2vgUI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "439011813979-9765n85jmi7vk0knbuo7mte21qll7228.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
