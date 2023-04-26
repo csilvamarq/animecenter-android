@@ -9,15 +9,17 @@ import AppContext from "../context/appContext";
 const List = (props) => {
   const [series, setSeries] = useState([])
   const [loading, setLoading] = useState(true)
-  const {theme} = useContext(AppContext)
+  const {theme,token} = useContext(AppContext)
+  console.log("token",token)
   useEffect(() => {
     props.navigation.setOptions({headerShown : false,headerStyle: { backgroundColor: 'red' }, title: "Anime", headerRight: () => (<Icon name="search" size={35} onPress={() => props.navigation.navigate("Search")} />) })
-    axios.get(`${API}/lastAnime`)
+    axios.get(`${API}/lastAnime`,{ headers: {
+      "Authorization":  token
+   }})
       .then(response => { setSeries(response.data);setLoading(false) })
       .catch(error => console.error(error))
   }, []);
-
-  return loading ? (
+  return loading && series.length < 1 ? (
     <>
       <ActivityIndicator style={{backgroundColor : theme === "dark" ? "black" : "white"}} size={40} /></>
   ) : (

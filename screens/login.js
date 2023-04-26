@@ -15,8 +15,13 @@ import {
   Image,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import { useContext } from 'react';
+import AppContext from '../context/appContext';
+import { API } from '../api';
 const Login = props => {
   const [loading, setLoading] = useState(false);
+  const {setToken} = useContext(AppContext)
   const [message, setMessage] = useState('');
   const [email, setEmail] = useState('');
   const [login, setLogin] = useState(false);
@@ -32,43 +37,46 @@ const Login = props => {
         '439011813979-sn2u250ms59r57khpccp19gi6r3kksmd.apps.googleusercontent.com',
     });
     // Check if user is already signed in
-    _isSignedIn();
+    _isSignedIn()
   }, []);
   const tokenSignIn = async userInfo => {
+    // console.log("userInfo")
+    // console.log(userInfo)
     // Create a Google credential with the token
     const googleCredential = auth.GoogleAuthProvider.credential(
       userInfo.idToken,
     );
-    console.log('GOOGLE CREDENTIAL');
-    console.log(googleCredential);
+    // console.log('GOOGLE CREDENTIAL');
+    // console.log(googleCredential);
 
     // Sign-in the user with the credential
     const signInWithCredential = await auth().signInWithCredential(
       googleCredential,
     );
-    console.log('SIGN IN WITH CREDENTIAL');
-    console.log(signInWithCredential);
+    // console.log('SIGN IN WITH CREDENTIAL');
+    // console.log(signInWithCredential);
 
     //Get the token from the current User
     const idTokenResult = await auth().currentUser.getIdTokenResult();
-    console.log('USER JWT');
-    console.log(idTokenResult.token);
-  };
-  const _isSignedIn = async () => {
-    const isSignedIn = await GoogleSignin.isSignedIn();
-    if (isSignedIn) {
-      console.log(1)
-      setLoading(true);
-      setLogin(true);
-      const user_email = await AsyncStorage.getItem('user_email');
-      const user_status = await AsyncStorage.getItem('user_status');
-      setEmail(user_email);
-      // Set User Info if user is already signed in
-      console.log('signed in ' + user_email);
-      setMessage("Logged");
-      setLoading(false);
-      props.navigation.navigate('Home');
-    }
+    // console.log('USER JWT');
+    // console.log(idTokenResult.token);
+     //Validate User Token
+
+     await axios.post(`${API}/token`, {
+      token: idTokenResult.token,
+      email: userInfo.user.email
+    })
+      .then(async response => {
+        // console.log("JWT TOKEN FROM EXPRESS");
+        // console.log(response.data);
+        setToken(response.data.data.access_token)
+      })
+      .catch(error => {
+        ''
+        // console.log("RESPONSE ERROR TOKEN VERIFICATION");
+        // console.log(error);
+      })
+
   };
   const _signIn = async () => {
     // It will prompt google Signin Widget
@@ -82,21 +90,21 @@ const Login = props => {
       });
       const userInfo = await GoogleSignin.signIn();
       setUserInfo(userInfo);
-      console.log('ID TOKEN');
-      console.log(userInfo);
+      // console.log('ID TOKEN');
+      // console.log(userInfo);
       setMessage("Informacion");
-      const token = await AsyncStorage.getItem('token');
       await AsyncStorage.setItem('user_info', JSON.stringify(userInfo));
-      console.log('USER TOKEN SAVED');
-      console.log(token);
+      // console.log('USER TOKEN SAVED');
+      // console.log(token);
+      
       await tokenSignIn(userInfo);
-      const userEmail = await AsyncStorage.getItem('user_email');
-      setMessage("Login Correcto");
-      console.log('USER EMAIL ', userEmail);
+      const userEmail = await AsyncStorage.setItem('user_email',userInfo.user.email);
+      // setMessage("Login Correcto");
+      // console.log('USER EMAIL ', userEmail);
       setLoading(false);
       await AsyncStorage.setItem('login', 'logged');
       await AsyncStorage.setItem('login', JSON.stringify(true));
-      props.navigation.navigate('Home');
+       props.navigation.navigate('Home');
     } catch (error) {
       console.log('Message', JSON.stringify(error));
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -110,6 +118,12 @@ const Login = props => {
         alert(error.message);
         setLoading(false);
       }
+    }
+  };
+  const _isSignedIn = async () => {
+    const isSignedIn = await GoogleSignin.isSignedIn();
+    if (isSignedIn) {
+     _signIn()
     }
   };
 
@@ -138,17 +152,11 @@ const Login = props => {
   } else {
     return (
       <SafeAreaView style={styles.container}>
-        {console.log('INFO')}
-        {console.log(userInfo)}
+        {/* {console.log('INFO')}
+        {console.log(userInfo)} */}
         <View>
           <View style={styles.container}>
-            {login ? (
-              <>
-                <TouchableOpacity
-                  style={styles.buttonStyle}
-                  onPress={_signOut}><Text>Cerrar sesion</Text></TouchableOpacity>
-              </>
-            ) : (
+            {login ? props.navigation.navigate("Home") : (
               <GoogleSigninButton
                 style={{width: 312, height: 48}}
                 size={GoogleSigninButton.Size.Wide}
@@ -162,6 +170,7 @@ const Login = props => {
     );
   }
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

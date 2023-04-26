@@ -23,7 +23,7 @@ const Anime = props => {
   const [pages, setPages] = useState(0);
   const [loading, setLoading] = useState(true);
   const [empty, IsEmpty] = useState(false);
-  const {theme} = useContext(AppContext);
+  const {theme,token} = useContext(AppContext);
   const [episodesCount, setEpisodesCount] = useState(1);
   const lastIndex =
     props.route.params.url !== undefined
@@ -42,7 +42,9 @@ const Anime = props => {
           props.route.params.url
             ? props.route.params.url.substring(31, lastIndex)
             : props.route.params.anime.substring(29, lastIndex)
-        }/${episodesCount}`,
+        }/${episodesCount}`,{ headers: {
+          "Authorization":  token
+       }}
       )
       .then(response => {
         if (response.data !== []) {

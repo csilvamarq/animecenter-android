@@ -13,7 +13,7 @@ import axios from 'axios';
 import AppContext from '../context/appContext';
 
 const OptionSelector = props => {
-    const {theme} = useContext(AppContext);
+    const {theme,token} = useContext(AppContext);
   const lastIndex = props.route.params.anime.lastIndexOf(`-episodio`);
   const backAction = () => props.navigation.setOptions({headerShown: true});
   const [options, setOptions] = useState([]);
@@ -25,7 +25,9 @@ const OptionSelector = props => {
     });
     axios
       .get(
-        `${API}/url/${props.route.params.anime.substring(29, lastIndex)}/${1}`,
+        `${API}/url/${props.route.params.anime.substring(29, lastIndex)}/${1}`,{ headers: {
+          "Authorization":  token
+       }}
       )
       .then(({data}) => {
         const parsedData = data.map(element =>

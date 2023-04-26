@@ -31,7 +31,7 @@ const ListaAnime = props => {
   const [DropDown, setDropDown] = useState(false);
   const [animes, setAnimes] = useState([]);
   const [value, setValue] = useState(null);
-  const {theme} = useContext(AppContext)
+  const {theme,token} = useContext(AppContext)
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -79,7 +79,9 @@ const ListaAnime = props => {
   };
   const onSelect = value => {
     setSearchLoad(true);
-    axios.get(`${API}/search/${value}`).then(({data}) => {
+    axios.get(`${API}/search/${value}`,{ headers: {
+      "Authorization":  token
+   }}).then(({data}) => {
       let arr = [];
       data.map(item =>
         arr.push({value: item.url, label: item.name, imagen: item.imagen}),

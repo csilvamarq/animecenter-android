@@ -14,17 +14,21 @@ const Series = props => {
   const [currentSeries, setCurrentSeries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [switchValue, setSwitchValue] = useState(false);
-  const {theme} = useContext(AppContext);
+  const {theme,token} = useContext(AppContext);
   useEffect(() => {
     props.navigation.setOptions({
       headerShown: false,
       headerStyle: {backgroundColor: 'red'},
     });
-    axios.get(`${API}/lastCurrentSeries`).then(({data}) => {
+    axios.get(`${API}/lastCurrentSeries`,{ headers: {
+      "Authorization":  token
+   }}).then(({data}) => {
       setCurrentSeries(data);
     });
     axios
-      .get(`${API}/lastAnimeSeries`)
+      .get(`${API}/lastAnimeSeries`,{ headers: {
+        Authorization: "Bearer " + token
+     }})
       .then(({data}) => {
         setSeries(data);
         setLoading(false);

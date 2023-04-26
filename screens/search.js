@@ -16,11 +16,13 @@ const Search = (props) => {
     const [search, setSearch] = useState(false);
     const [results, setResults] = useState([]);
     const [loading, setLoading] = useState(false);
-    const {theme} = useContext(AppContext)
+    const {theme,token} = useContext(AppContext)
 
     const getSearchResults = async (text) => {
         setLoading(true)
-        return axios.get(`${API}/search/${text}`)
+        return axios.get(`${API}/search/${text}`,{ headers: {
+            "Authorization":  token
+         }})
             .then(response => { setResults(response.data); setSearch(true); setLoading(false) })
             .catch(error => console.error(error))
     }

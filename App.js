@@ -25,12 +25,13 @@ const Stack = createNativeStackNavigator();
 
 const App = () => {
   const [theme, setTheme] = useState('light');
+  const [token,setToken] = useState('')
   useEffect(() => {
     AsyncStorage.getItem('theme').then(value => value !==null && setTheme(value));
     SplashScreen.hide();
   });
   return (
-    <AppContext.Provider value={{theme,setTheme}}>
+    <AppContext.Provider value={{theme,setTheme,token,setToken}}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{contentStyle : {backgroundColor :  theme === "dark" ? "black" : "white"}}}>
           <Stack.Screen name='Login' component={Login}></Stack.Screen>

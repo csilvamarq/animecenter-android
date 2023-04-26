@@ -17,7 +17,7 @@ const Player = props => {
   const backAction = () => props.navigation.setOptions({headerShown: true});
   const [url, setUrl] = useState('');
   const [loading, setLoading] = useState(true);
-  const {theme} = useContext(AppContext);
+  const {theme,token} = useContext(AppContext);
   const lastIndex = props.route.params.anime.lastIndexOf(`-episodio`);
   const getAnimeUrl = async () => {
     return axios
@@ -81,7 +81,9 @@ const Player = props => {
         `${API}/url/${props.route.params.anime.substring(
           29,
           lastIndex,
-        )}/${currentEpisode}`,
+        )}/${currentEpisode}`,{ headers: {
+          "Authorization":  token
+       }}
       )
       .then(response => {
         setUrl(response.data[props.route.params.url]);
