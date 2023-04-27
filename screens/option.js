@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignContent: 'center',
-    backgroundColor : "black",
+    backgroundColor : "#232322",
     borderRadius : 20
   },
   text: {

@@ -36,14 +36,14 @@ const Search = (props) => {
         })
     return (
         <SafeAreaProvider>
-            <ScrollView style={{backgroundColor : theme === "dark" ? "black" : "white"}}>
+            <ScrollView style={{backgroundColor : theme === "dark" ? "#232322" : "#F5F5F5"}}>
                 {search ? (<>
-                    <Text style={{color : theme === "dark" ? "white" : "black"}}> se han encontrado {results.length} resultados</Text>
+                    <Text style={{color : theme === "dark" ? "#F5F5F5" : "#232322"}}> se han encontrado {results.length} resultados</Text>
                     {results.map((serie, i) =>
-                        <ListItem containerStyle={{backgroundColor : theme === "dark" ? "black" : "white"}} key={i} bottomDivider>
+                        <ListItem containerStyle={{backgroundColor : theme === "dark" ? "#232322" : "#F5F5F5"}} key={i} bottomDivider>
                             <Image source={{ uri: serie.imagen }} style={{ width: 100, height: 100 }} onPress={() => props.navigation.navigate("Anime", { url: serie.url, name: serie.name, imagen: serie.imagen })} />
-                            <ListItem.Content style={{backgroundColor : theme === "dark" ? "black" : "white"}}>
-                                <ListItem.Title style={{color : theme === "dark" ? "white" : "black"}}>{serie.name}</ListItem.Title>
+                            <ListItem.Content style={{backgroundColor : theme === "dark" ? "#232322" : "#F5F5F5"}}>
+                                <ListItem.Title style={{color : theme === "dark" ? "#F5F5F5" : "#232322"}}>{serie.name}</ListItem.Title>
                             </ListItem.Content>
                         </ListItem>)}
                 </>) : loading ? (<ActivityIndicator />) : null}

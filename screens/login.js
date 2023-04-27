@@ -21,11 +21,10 @@ import AppContext from '../context/appContext';
 import { API } from '../api';
 const Login = props => {
   const [loading, setLoading] = useState(false);
-  const {setToken} = useContext(AppContext)
+  const {setToken,setUserInfo} = useContext(AppContext)
   const [message, setMessage] = useState('');
   const [email, setEmail] = useState('');
   const [login, setLogin] = useState(false);
-  const [userInfo, setUserInfo] = useState('');
   useEffect(() => {
     // Initial configuration
     GoogleSignin.configure({
@@ -40,26 +39,26 @@ const Login = props => {
     _isSignedIn()
   }, []);
   const tokenSignIn = async userInfo => {
-    // console.log("userInfo")
-    // console.log(userInfo)
+    // ("userInfo")
+    // (userInfo)
     // Create a Google credential with the token
     const googleCredential = auth.GoogleAuthProvider.credential(
       userInfo.idToken,
     );
-    // console.log('GOOGLE CREDENTIAL');
-    // console.log(googleCredential);
+    // ('GOOGLE CREDENTIAL');
+    // (googleCredential);
 
     // Sign-in the user with the credential
     const signInWithCredential = await auth().signInWithCredential(
       googleCredential,
     );
-    // console.log('SIGN IN WITH CREDENTIAL');
-    // console.log(signInWithCredential);
+    // ('SIGN IN WITH CREDENTIAL');
+    // (signInWithCredential);
 
     //Get the token from the current User
     const idTokenResult = await auth().currentUser.getIdTokenResult();
-    // console.log('USER JWT');
-    // console.log(idTokenResult.token);
+    // ('USER JWT');
+    // (idTokenResult.token);
      //Validate User Token
 
      await axios.post(`${API}/token`, {
@@ -67,14 +66,14 @@ const Login = props => {
       email: userInfo.user.email
     })
       .then(async response => {
-        // console.log("JWT TOKEN FROM EXPRESS");
-        // console.log(response.data);
+        // ("JWT TOKEN FROM EXPRESS");
+        // (response.data);
         setToken(response.data.data.access_token)
       })
       .catch(error => {
         ''
-        // console.log("RESPONSE ERROR TOKEN VERIFICATION");
-        // console.log(error);
+        // ("RESPONSE ERROR TOKEN VERIFICATION");
+        // (error);
       })
 
   };
@@ -90,23 +89,23 @@ const Login = props => {
       });
       const userInfo = await GoogleSignin.signIn();
       setUserInfo(userInfo);
-      // console.log('ID TOKEN');
-      // console.log(userInfo);
+      // ('ID TOKEN');
+      // (userInfo);
       setMessage("Informacion");
       await AsyncStorage.setItem('user_info', JSON.stringify(userInfo));
-      // console.log('USER TOKEN SAVED');
-      // console.log(token);
+      // ('USER TOKEN SAVED');
+      // (token);
       
       await tokenSignIn(userInfo);
       const userEmail = await AsyncStorage.setItem('user_email',userInfo.user.email);
       // setMessage("Login Correcto");
-      // console.log('USER EMAIL ', userEmail);
+      // ('USER EMAIL ', userEmail);
       setLoading(false);
       await AsyncStorage.setItem('login', 'logged');
       await AsyncStorage.setItem('login', JSON.stringify(true));
        props.navigation.navigate('Home');
     } catch (error) {
-      console.log('Message', JSON.stringify(error));
+      ('Message', JSON.stringify(error));
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         alert('User Cancelled the Login Flow');
         setLoading(false);
@@ -152,8 +151,8 @@ const Login = props => {
   } else {
     return (
       <SafeAreaView style={styles.container}>
-        {/* {console.log('INFO')}
-        {console.log(userInfo)} */}
+        {/* {('INFO')}
+        {(userInfo)} */}
         <View>
           <View style={styles.container}>
             {login ? props.navigation.navigate("Home") : (

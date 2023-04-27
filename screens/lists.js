@@ -93,8 +93,8 @@ const ListaAnime = props => {
   useEffect(() => {
     props.navigation.setOptions({
       title: 'Mis Listas',
-      headerTitleStyle: { color: theme === "dark" ? "white" : "black" },
-      headerStyle: { backgroundColor: theme === "dark" ? "black" : "white" },
+      headerTitleStyle: { color: theme === "dark" ? "#F5F5F5" : "#232322" },
+      headerStyle: { backgroundColor: theme === "dark" ? "#232322" : "#F5F5F5" },
       headerRight: () => (
         <>
           <Icon name="pluscircleo" size={30} onPress={showModal} />
@@ -113,7 +113,7 @@ const ListaAnime = props => {
   }, [animes]);
   const height = 800
   return (
-    <ScrollView contentContainerStyle={{height: '100%',backgroundColor :theme === "dark" ? "black" : "white" }}>
+    <ScrollView contentContainerStyle={{height: '100%',backgroundColor :theme === "dark" ? "#232322" : "#F5F5F5" }}>
       {lista ? (
         <ScrollView>
           {JSON.parse(lista).map((item, index) => {
@@ -122,7 +122,7 @@ const ListaAnime = props => {
               <CollapsibleView
                 expanded={listaOpen[index]}
                 unmountOnCollapse={true}
-                style={{color: theme === "dark" ? "white" : "black", borderRadius: 5, height: listaOpen[index] ? height : 50}}
+                style={{color: theme === "dark" ? "#F5F5F5" : "#232322", borderRadius: 5, height: listaOpen[index] ? height : 50}}
                 title={
                   <Text
                     onPress={() => {
@@ -134,11 +134,11 @@ const ListaAnime = props => {
                       });
                       setListaOpen(newLista);
                     }}
-                    style={{color:  theme === "dark" ? "white" : "black"}}>
+                    style={{color:  theme === "dark" ? "#F5F5F5" : "#232322"}}>
                     {item.name.toUpperCase()}
                   </Text>
                 }>
-                <Text style={{color:  theme === "dark" ? "white" : "black"}} >{item.descripcion}</Text>
+                <Text style={{color:  theme === "dark" ? "#F5F5F5" : "#232322"}} >{item.descripcion}</Text>
                 <ScrollView
                   style={{
                   }}>
@@ -151,7 +151,7 @@ const ListaAnime = props => {
                               numberOfLines={2}
                               renderViewMore="Leer mas"
                               renderViewLess="Leer menos">
-                              <Text style={{...style.itemName,color:  theme === "dark" ? "white" : "black"}}>{anime.name}</Text>
+                              <Text style={{...style.itemName,color:  theme === "dark" ? "#F5F5F5" : "#232322"}}>{anime.name}</Text>
                             </ViewMoreText>
                           </View>
                         </View>
