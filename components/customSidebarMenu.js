@@ -81,15 +81,15 @@ const styles = StyleSheet.create({
       </DrawerContentScrollView>
       <Divider />
       <View style={{width : "100%", height : "20%",padding : "8%",display : "flex",flexDirection : "row"}}>
-      <Icon onPress={async () => {
+      <Icon color={theme === "dark" ? "white" : "black"}  onPress={async () => {
          await GoogleSignin.revokeAccess();
          await GoogleSignin.signOut();
          await AsyncStorage.removeItem('login');
          setUserInfo('');
          setLogin(false)
          props.navigation.navigate("Login")
-      }} color={"black"} name="sign-out" size={25} />
-      <Text>Logout</Text>
+      }} name="sign-out" size={25} />
+      <Text style={{color : theme === "dark" ? "white" : "black",marginLeft : 10}}>Logout</Text>
       </View>
       <Text
         style={{

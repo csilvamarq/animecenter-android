@@ -13,13 +13,13 @@ const List = (props) => {
   const [loading, setLoading] = useState(true)
   const {theme,token,setTheme} = useContext(AppContext)
   useEffect(() => {
-    props.navigation.setOptions({headerStyle: { backgroundColor : theme === "dark" ? "#232322" : "#F5F5F5" }, title: "Anime", headerRight: () => (<View style={{display : "flex",flexDirection : "row"}}><Icon2 color={theme === "dark" ? "#F5F5F5" : "#232322"} size={30} name={theme === "dark" ? "md-flashlight" : "md-flashlight-outline"} onPress={() => setTheme(theme === "dark" ? "light" : "dark")} /><Icon color={theme === "dark" ? "#F5F5F5" : "#232322"} name="search" size={35} onPress={() => props.navigation.navigate("Search")} /></View>) })
+    props.navigation.setOptions({headerStyle: { backgroundColor : theme === "dark" ?  "#232322" : "#F5F5F5"  }, title: "Anime", headerRight: () => (<View style={{display : "flex",flexDirection : "row"}}><Icon2 color={theme === "dark" ? "#F5F5F5" : "#232322"} size={30} name={theme === "dark" ? "md-flashlight" : "md-flashlight-outline"} onPress={() => setTheme(theme === "dark" ? "light" : "dark")} /><Icon color={theme === "dark" ? "#F5F5F5" : "#232322"} name="search" size={35} onPress={() => props.navigation.navigate("Search")} /></View>) })
     axios.get(`${API}/lastAnime`,{ headers: {
       "Authorization":  token
    }})
       .then(response => { setSeries(response.data);setLoading(false) })
       .catch(error => console.error(error))
-  }, []);
+  }, [theme]);
   return loading && series.length < 1 ? (
     <>
       <ActivityIndicator style={{backgroundColor : theme === "dark" ? "#232322" : "#F5F5F5"}} size={40} /></>
