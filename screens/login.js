@@ -21,10 +21,9 @@ import AppContext from '../context/appContext';
 import { API } from '../api';
 const Login = props => {
   const [loading, setLoading] = useState(false);
-  const {setToken,setUserInfo} = useContext(AppContext)
+  const {setToken,setUserInfo,login,setLogin} = useContext(AppContext)
   const [message, setMessage] = useState('');
   const [email, setEmail] = useState('');
-  const [login, setLogin] = useState(false);
   useEffect(() => {
     // Initial configuration
     GoogleSignin.configure({
