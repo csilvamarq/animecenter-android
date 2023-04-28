@@ -17,7 +17,6 @@ import {useContext} from 'react';
 import AppContext from '../context/appContext';
 
 const Anime = props => {
-  const isFocused = useIsFocused();
   const [episodes, setEpisodes] = useState([]);
   const [info, setInfo] = useState({});
   const [pages, setPages] = useState(0);
@@ -33,8 +32,8 @@ const Anime = props => {
     setEpisodes([]);
     props.navigation.setOptions({
       title: props.route.params.name,
-      headerTitleStyle: {color: theme === 'dark' ? 'white' : 'black'},
-      headerStyle: {backgroundColor: theme === 'dark' ? 'black' : 'white'},
+      headerTitleStyle: {color: theme === 'dark' ? '#F5F5F5' : '#232322'},
+      headerStyle: {backgroundColor: theme === 'dark' ? '#232322' : '#F5F5F5'},
     });
     axios
       .get(
@@ -62,7 +61,7 @@ const Anime = props => {
   return loading ? (
     <View>
       <ActivityIndicator
-        style={{backgroundColor: theme === 'dark' ? 'black' : 'white'}}
+        style={{backgroundColor: theme === 'dark' ? '#232322' : '#F5F5F5'}}
         size={40}
       />
     </View>
@@ -70,20 +69,20 @@ const Anime = props => {
     <SafeAreaProvider
       style={{
         overflow: 'hidden',
-        backgroundColor: theme === 'dark' ? 'black' : 'white',
+        backgroundColor: theme === 'dark' ? '#232322' : '#F5F5F5',
       }}>
       <ScrollView>
         <Card
           containerStyle={{
-            backgroundColor: theme === 'dark' ? 'black' : 'white',
-            borderColor: theme === 'dark' ? 'black' : 'white',
+            backgroundColor: theme === 'dark' ? '#232322' : '#F5F5F5',
+            borderColor: theme === 'dark' ? '#232322' : '#F5F5F5',
           }}
           title="HELLO WORLD">
           <Image
             source={{uri: props.route.params.imagen}}
             style={styles.image}
           />
-          <Text style={{color: theme === 'dark' ? 'white' : 'black'}}>
+          <Text style={{color: theme === 'dark' ? '#F5F5F5' : '#232322'}}>
             {info.descripcion}
           </Text>
           <FlatGrid
@@ -99,14 +98,14 @@ const Anime = props => {
                 <Text
                   style={{
                     ...styles.itemName,
-                    color: theme === 'dark' ? 'white' : 'black',
+                    color: theme === 'dark' ? '#F5F5F5' : '#232322',
                   }}>
                   {item.name}
                 </Text>
                 <Text
                   style={{
                     ...styles.itemCode,
-                    color: theme === 'dark' ? 'white' : 'black',
+                    color: theme === 'dark' ? '#F5F5F5' : '#232322',
                   }}>
                   {item.value}
                 </Text>
@@ -117,7 +116,7 @@ const Anime = props => {
             style={{
               marginBottom: 10,
               fontSize: 30,
-              color: theme === 'dark' ? 'white' : 'black',
+              color: theme === 'dark' ? '#F5F5F5' : '#232322',
             }}>
             Puntuación
           </Text>
@@ -129,7 +128,7 @@ const Anime = props => {
         {episodes.map((episode, i) => (
           <ListItem
             containerStyle={{
-              backgroundColor: theme === 'dark' ? 'black' : 'white',
+              backgroundColor: theme === 'dark' ? '#232322' : '#F5F5F5',
             }}
             style={styles.episodeContainer}
             key={i}
@@ -146,9 +145,9 @@ const Anime = props => {
               }
             />
             <ListItem.Content
-              style={{backgroundColor: theme === 'dark' ? 'black' : 'white'}}>
+              style={{backgroundColor: theme === 'dark' ? '#232322' : '#F5F5F5'}}>
               <ListItem.Title
-                style={{color: theme === 'dark' ? 'white' : 'black'}}>
+                style={{color: theme === 'dark' ? '#F5F5F5' : '#232322'}}>
                 episodio{' '}
                 {(episodesCount - 1) * 30 + i + 1}
               </ListItem.Title>
@@ -199,13 +198,13 @@ const styles = StyleSheet.create({
   },
   itemName: {
     fontSize: 16,
-    color: 'black',
+    color: '#232322',
     fontWeight: '600',
   },
   itemCode: {
     fontWeight: '600',
     fontSize: 12,
-    color: 'black',
+    color: '#232322',
   },
   image: {
     flex: 1,
