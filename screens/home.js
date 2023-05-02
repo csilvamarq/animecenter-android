@@ -1,9 +1,9 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect } from "react";
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Icon from "react-native-vector-icons/EvilIcons";
 import Icon1 from 'react-native-vector-icons/FontAwesome'
 import Icon2 from 'react-native-vector-icons/Ionicons'
-import { TouchableOpacity, View } from "react-native";
+import { View } from "react-native";
 import { useContext } from "react";
 import AppContext from "../context/appContext";
 import List from "./list";
@@ -11,12 +11,10 @@ import Series from "./series";
 import Search from "./search";
 import Lists from "./lists";
 import CustomSidebarMenu from "../components/customSidebarMenu";
-import Login from "./login";
 const Home = (props) => {
     const Drawer = createDrawerNavigator()
     const {theme,setTheme,userInfo} = useContext(AppContext)
     useEffect(() => {
-        console.log(theme)
         props.navigation.setOptions({headerShown:  false , headerTitleStyle: { color: theme === "dark" ? "#F5F5F5" : "#232322" },headerStyle: { backgroundColor: theme === "dark" ? "#232322" : "#F5F5F5" },title : "Animecenter2", headerRight: () => (<View style={{display : "flex",flexDirection : "row"}}><Icon2 color={theme === "dark" ? "#F5F5F5" : "#232322"} size={30} name={theme === "dark" ? "md-flashlight" : "md-flashlight-outline"} onPress={() => setTheme(theme === "dark" ? "light" : "dark")} /><Icon color={theme === "dark" ? "#F5F5F5" : "#232322"} name="search" size={35} onPress={() => props.navigation.navigate("Search")} /></View>) })
     },[])
     return (

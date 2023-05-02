@@ -96,10 +96,18 @@ const Player = props => {
     );
     return () => backHandler.remove();
   }, [currentEpisode]);
-  const injectedJavaScript = `var element = document.getElementsByTagName("iframe"), index;
-  for (index = element.length - 1; index >= 0; index--) {
-      element[index].parentNode.removeChild(element[index]);
-  }`
+  const injectedJavaScript = `
+  (function() {
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = 'https://cdn.jsdelivr.net/npm/uBlock-Origin/web/uBlockOrigin.js';
+    script.onload = function() {
+      console.log('uBlock Origin loaded');
+      uBlockOrigin.resume();
+    };
+    document.head.appendChild(script);
+  })();
+`
   return loading ? (
     <>
       <ActivityIndicator
