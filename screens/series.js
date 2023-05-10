@@ -24,6 +24,7 @@ const Series = props => {
       "Authorization":  token
    }}).then(({data}) => {
       setCurrentSeries(data);
+      setLoading(false);
     });
     axios
       .get(`${API}/lastAnimeSeries`,{ headers: {
