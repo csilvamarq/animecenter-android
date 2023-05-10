@@ -47,6 +47,7 @@ const OptionSelector = props => {
       style={{
         flex: 1,
         borderWidth: 1,
+        backgroundColor : "#F5F5F5", 
         flexDirection: 'column',
       }}>
       {options.length > 0 ? (

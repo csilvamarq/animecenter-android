@@ -97,21 +97,24 @@ const Player = props => {
     return () => backHandler.remove();
   }, [currentEpisode]);
   const injectedJavaScript = `
-  (function() {
-    var script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.src = 'https://cdn.jsdelivr.net/npm/uBlock-Origin/web/uBlockOrigin.js';
-    script.onload = function() {
-      console.log('uBlock Origin loaded');
-      uBlockOrigin.resume();
-    };
-    document.head.appendChild(script);
-  })();
+  // Busca y elimina todos los elementos <iframe>
+    function removeIFrames() {
+        const iframes = document.querySelectorAll('iframe');
+
+        iframes.forEach((iframe) => {
+            iframe.parentNode.removeChild(iframe);
+        });
+    }
+
+    // Espera a que la página esté completamente cargada antes de eliminar los iframes
+    window.addEventListener('load', () => {
+        removeIFrames();
+    });
 `
   return loading ? (
     <>
       <ActivityIndicator
-        style={{backgroundColor: theme === 'dark' ? 'black' : 'white'}}
+        style={{backgroundColor: theme === 'dark' ?  '#232322' : '#F5F5F5'}}
         size={40}
       />
     </>
