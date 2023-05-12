@@ -17,7 +17,7 @@ const Player = props => {
   const backAction = () => props.navigation.setOptions({headerShown: true});
   const [url, setUrl] = useState('');
   const [loading, setLoading] = useState(true);
-  const {theme,token} = useContext(AppContext);
+  const {theme, token} = useContext(AppContext);
   const lastIndex = props.route.params.anime.lastIndexOf(`-episodio`);
   const getAnimeUrl = async () => {
     return axios
@@ -81,9 +81,12 @@ const Player = props => {
         `${API}/url/${props.route.params.anime.substring(
           29,
           lastIndex,
-        )}/${currentEpisode}`,{ headers: {
-          "Authorization":  token
-       }}
+        )}/${currentEpisode}`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        },
       )
       .then(response => {
         setUrl(response.data[props.route.params.url]);
@@ -110,18 +113,18 @@ const Player = props => {
     window.addEventListener('load', () => {
         removeIFrames();
     });
-`
+`;
   return loading ? (
     <>
       <ActivityIndicator
-        style={{backgroundColor: theme === 'dark' ?  '#232322' : '#F5F5F5'}}
+        style={{backgroundColor: theme === 'dark' ? '#232322' : '#F5F5F5'}}
         size={40}
       />
     </>
   ) : (
     <>
       <WebView
-      thirdPartyCookiesEnabled={false}
+        thirdPartyCookiesEnabled={false}
         mediaPlaybackRequiresUserAction={false}
         injectedJavaScript={injectedJavaScript}
         allowsFullscreenVideo={true}

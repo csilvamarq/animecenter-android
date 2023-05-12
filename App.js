@@ -25,21 +25,43 @@ const Stack = createNativeStackNavigator();
 
 const App = () => {
   const [theme, setTheme] = useState('light');
-  const [token,setToken] = useState('')
+  const [token, setToken] = useState('');
   const [login, setLogin] = useState(false);
-  const [userInfo,setUserInfo] = useState({})
+  const [lista, setLista] = useState([]);
+  const [userInfo, setUserInfo] = useState({});
   useEffect(() => {
-    AsyncStorage.getItem('theme').then(value => value !==null && setTheme(value));
+    AsyncStorage.getItem('theme').then(
+      value => value !== null && setTheme(value),
+    );
     SplashScreen.hide();
   });
   return (
-    <AppContext.Provider value={{theme,setTheme,token,setToken,userInfo,setUserInfo,login,setLogin}}>
+    <AppContext.Provider
+      value={{
+        theme,
+        setTheme,
+        token,
+        setToken,
+        userInfo,
+        setUserInfo,
+        login,
+        setLogin,
+        lista,
+        setLista,
+      }}>
       <NavigationContainer>
-        <Stack.Navigator screenOptions={{contentStyle : {backgroundColor :  theme === "dark" ? "#232322" : "#F5F5F5"}}}>
-          <Stack.Screen name='Login' component={Login}></Stack.Screen>
-          <Stack.Screen  name="Home" component={Home}></Stack.Screen>
+        <Stack.Navigator
+          screenOptions={{
+            contentStyle: {
+              backgroundColor: theme === 'dark' ? '#232322' : '#F5F5F5',
+            },
+          }}>
+          <Stack.Screen name="Login" component={Login}></Stack.Screen>
+          <Stack.Screen name="Home" component={Home}></Stack.Screen>
           <Stack.Screen name="Search" component={Search}></Stack.Screen>
-          <Stack.Screen name="OptionSelector" component={OptionSelector}></Stack.Screen>
+          <Stack.Screen
+            name="OptionSelector"
+            component={OptionSelector}></Stack.Screen>
           <Stack.Screen name="Player" component={Player}></Stack.Screen>
           <Stack.Screen name="Anime" component={Anime}></Stack.Screen>
         </Stack.Navigator>

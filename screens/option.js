@@ -13,7 +13,7 @@ import axios from 'axios';
 import AppContext from '../context/appContext';
 
 const OptionSelector = props => {
-    const {theme,token} = useContext(AppContext);
+  const {theme, token} = useContext(AppContext);
   const lastIndex = props.route.params.anime.lastIndexOf(`-episodio`);
   const backAction = () => props.navigation.setOptions({headerShown: true});
   const [options, setOptions] = useState([]);
@@ -25,9 +25,12 @@ const OptionSelector = props => {
     });
     axios
       .get(
-        `${API}/url/${props.route.params.anime.substring(29, lastIndex)}/${1}`,{ headers: {
-          "Authorization":  token
-       }}
+        `${API}/url/${props.route.params.anime.substring(29, lastIndex)}/${1}`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        },
       )
       .then(({data}) => {
         const parsedData = data.map(element =>
@@ -47,14 +50,17 @@ const OptionSelector = props => {
       style={{
         flex: 1,
         borderWidth: 1,
-        backgroundColor : "#F5F5F5", 
+        backgroundColor: '#F5F5F5',
         flexDirection: 'column',
       }}>
       {options.length > 0 ? (
         options.map((element, index) => {
           return (
             <TouchableOpacity
-              style={{...styles.container,backgroundColor: theme === 'dark' ? 'white' : 'black'}}
+              style={{
+                ...styles.container,
+                backgroundColor: theme === 'dark' ? 'white' : 'black',
+              }}
               onPress={() =>
                 props.navigation.navigate('Player', {
                   anime: props.route.params.anime,
@@ -63,7 +69,13 @@ const OptionSelector = props => {
                   url: index,
                 })
               }>
-              <Text style={{...styles.text,color: theme === 'dark' ? 'black' : 'white'}}>{element}</Text>
+              <Text
+                style={{
+                  ...styles.text,
+                  color: theme === 'dark' ? 'black' : 'white',
+                }}>
+                {element}
+              </Text>
             </TouchableOpacity>
           );
         })
@@ -83,12 +95,12 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignContent: 'center',
-    backgroundColor : "#232322",
-    borderRadius : 20
+    backgroundColor: '#232322',
+    borderRadius: 20,
   },
   text: {
-    fontSize : 20,
-    color : "#ffffff",
+    fontSize: 20,
+    color: '#ffffff',
     textAlign: 'center',
   },
 });

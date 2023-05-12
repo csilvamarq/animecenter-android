@@ -16,12 +16,12 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { useContext } from 'react';
+import {useContext} from 'react';
 import AppContext from '../context/appContext';
-import { API } from '../api';
+import {API} from '../api';
 const Login = props => {
   const [loading, setLoading] = useState(false);
-  const {setToken,setUserInfo,login,setLogin} = useContext(AppContext)
+  const {setToken, setUserInfo, login, setLogin} = useContext(AppContext);
   const [message, setMessage] = useState('');
   const [email, setEmail] = useState('');
   useEffect(() => {
@@ -35,7 +35,7 @@ const Login = props => {
         '439011813979-sn2u250ms59r57khpccp19gi6r3kksmd.apps.googleusercontent.com',
     });
     // Check if user is already signed in
-    _isSignedIn()
+    _isSignedIn();
   }, []);
   const tokenSignIn = async userInfo => {
     // ("userInfo")
@@ -58,23 +58,23 @@ const Login = props => {
     const idTokenResult = await auth().currentUser.getIdTokenResult();
     // ('USER JWT');
     // (idTokenResult.token);
-     //Validate User Token
+    //Validate User Token
 
-     await axios.post(`${API}/token`, {
-      token: idTokenResult.token,
-      email: userInfo.user.email
-    })
+    await axios
+      .post(`${API}/token`, {
+        token: idTokenResult.token,
+        email: userInfo.user.email,
+      })
       .then(async response => {
         // ("JWT TOKEN FROM EXPRESS");
         // (response.data);
-        setToken(response.data.data.access_token)
+        setToken(response.data.data.access_token);
       })
       .catch(error => {
-        ''
+        '';
         // ("RESPONSE ERROR TOKEN VERIFICATION");
         // (error);
-      })
-
+      });
   };
   const _signIn = async () => {
     // It will prompt google Signin Widget
@@ -90,21 +90,24 @@ const Login = props => {
       setUserInfo(userInfo);
       // ('ID TOKEN');
       // (userInfo);
-      setMessage("Informacion");
+      setMessage('Informacion');
       await AsyncStorage.setItem('user_info', JSON.stringify(userInfo));
       // ('USER TOKEN SAVED');
       // (token);
-      
+
       await tokenSignIn(userInfo);
-      const userEmail = await AsyncStorage.setItem('user_email',userInfo.user.email);
+      const userEmail = await AsyncStorage.setItem(
+        'user_email',
+        userInfo.user.email,
+      );
       // setMessage("Login Correcto");
       // ('USER EMAIL ', userEmail);
       setLoading(false);
       await AsyncStorage.setItem('login', 'logged');
       await AsyncStorage.setItem('login', JSON.stringify(true));
-       props.navigation.navigate('Home');
+      props.navigation.navigate('Home');
     } catch (error) {
-      ('Message', JSON.stringify(error));
+      'Message', JSON.stringify(error);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         alert('User Cancelled the Login Flow');
         setLoading(false);
@@ -121,7 +124,7 @@ const Login = props => {
   const _isSignedIn = async () => {
     const isSignedIn = await GoogleSignin.isSignedIn();
     if (isSignedIn) {
-     _signIn()
+      _signIn();
     }
   };
 
@@ -154,7 +157,9 @@ const Login = props => {
         {(userInfo)} */}
         <View>
           <View style={styles.container}>
-            {login ? props.navigation.navigate("Home") : (
+            {login ? (
+              props.navigation.navigate('Home')
+            ) : (
               <GoogleSigninButton
                 style={{width: 312, height: 48}}
                 size={GoogleSigninButton.Size.Wide}

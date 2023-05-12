@@ -14,22 +14,28 @@ const Series = props => {
   const [currentSeries, setCurrentSeries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [switchValue, setSwitchValue] = useState(false);
-  const {theme,token} = useContext(AppContext);
+  const {theme, token} = useContext(AppContext);
   useEffect(() => {
     props.navigation.setOptions({
       headerShown: false,
       headerStyle: {backgroundColor: 'red'},
     });
-    axios.get(`${API}/lastCurrentSeries`,{ headers: {
-      "Authorization":  token
-   }}).then(({data}) => {
-      setCurrentSeries(data);
-      setLoading(false);
-    });
     axios
-      .get(`${API}/lastAnimeSeries`,{ headers: {
-        Authorization: "Bearer " + token
-     }})
+      .get(`${API}/lastCurrentSeries`, {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then(({data}) => {
+        setCurrentSeries(data);
+        setLoading(false);
+      });
+    axios
+      .get(`${API}/lastAnimeSeries`, {
+        headers: {
+            Authorization: token,
+        },
+      })
       .then(({data}) => {
         setSeries(data);
         setLoading(false);
@@ -180,7 +186,14 @@ const Series = props => {
                   <Image
                     source={{uri: serie.image}}
                     style={{width: 100, height: 100}}
-                    onPress={() => props.navigation.navigate("Anime", { anime: `${serie.url}1/`, name: serie.name, imagen: serie.image })}
+                    onPress={() => {
+                      console.log("serie",serie)
+                      props.navigation.navigate('Anime', {
+                        anime: `${serie.url}1/`,
+                        name: serie.name,
+                        imagen: serie.image,
+                      })}
+                    }
                   />
                   <ListItem.Content
                     style={{
@@ -222,7 +235,13 @@ const Series = props => {
                     {currentSeries[index].name}
                   </Text>
                   <Image
-                   onPress={() => props.navigation.navigate("Anime", { anime: `${currentSeries[index].url}1/`, name: currentSeries[index].name, imagen: currentSeries[index].image })}
+                    onPress={() =>
+                      props.navigation.navigate('Anime', {
+                        anime: `${currentSeries[index].url}1/`,
+                        name: currentSeries[index].name,
+                        imagen: currentSeries[index].image,
+                      })
+                    }
                     source={{uri: currentSeries[index].image}}
                     style={{alignSelf: 'center', height: 450, width: '100%'}}
                   />
