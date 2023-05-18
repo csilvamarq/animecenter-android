@@ -3,14 +3,15 @@ import {Image, ListItem} from '@rneui/base';
 import React, {useContext, useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, View, Text} from 'react-native';
 import AppContext from '../context/appContext';
+import Icon from 'react-native-vector-icons/EvilIcons';
+import {deleteAnimeFromList} from '../helpers/followFunctions';
 
 const ListaAnime = props => {
-  const {theme,lista,setLista} = useContext(AppContext);
-  console.log(lista)
+  const {theme, lista, setLista} = useContext(AppContext);
   return (
     <ScrollView>
       {lista.length > 0 ? (
-        lista.map((serie,i) => {
+        lista.map((serie, i) => {
           return (
             <ListItem
               containerStyle={{
@@ -31,6 +32,11 @@ const ListaAnime = props => {
                   {serie.name}
                 </ListItem.Title>
               </ListItem.Content>
+              <Icon
+                name="trash"
+                onPress={() => deleteAnimeFromList(serie.name, setLista, lista)}
+                size={30}
+              />
             </ListItem>
           );
         })
@@ -56,6 +62,9 @@ const style = StyleSheet.create({
     fontSize: 18,
     textAlign: 'center',
   },
+  FollowButton : {
+    borderRadius : '10px',
+  }
 });
 
 export default ListaAnime;

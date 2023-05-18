@@ -1,5 +1,5 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {ScrollView, ActivityIndicator, View} from 'react-native';
+import React, {useCallback, useContext, useEffect, useState} from 'react';
+import {ScrollView, ActivityIndicator, View,RefreshControl} from 'react-native';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import Icon2 from 'react-native-vector-icons/Ionicons';
@@ -12,6 +12,7 @@ const List = props => {
   const [series, setSeries] = useState([]);
   const [loading, setLoading] = useState(true);
   const {theme, token, setTheme} = useContext(AppContext);
+  const [refreshing, setRefreshing] = React.useState(false);
   useEffect(() => {
     props.navigation.setOptions({
       headerStyle: {backgroundColor: theme === 'dark' ? '#232322' : '#F5F5F5'},
@@ -45,6 +46,20 @@ const List = props => {
       })
       .catch(error => console.error(error));
   }, [theme]);
+    const onRefresh = useCallback(() => {
+      setRefreshing(true);
+    axios
+      .get(`${API}/lastAnime`, {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then(response => {
+        setSeries(response.data);
+        setRefreshing(false);
+      })
+      .catch(error => console.error(error));
+    },[])
   return loading && series.length < 1 ? (
     <>
       <ActivityIndicator
@@ -54,7 +69,9 @@ const List = props => {
     </>
   ) : (
     <SafeAreaProvider>
-      <ScrollView>
+      <ScrollView  refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
         {series.map((serie, i) => (
           <ListItem
             containerStyle={{

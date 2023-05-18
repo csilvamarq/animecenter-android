@@ -7,14 +7,16 @@ import Carousel from 'react-native-reanimated-carousel';
 import {API} from '../api';
 import AppContext from '../context/appContext';
 import {Tab, Text, TabView, Switch} from '@rneui/themed';
+import {Button} from '@rneui/base';
+import {addFollowAnime, deleteAnimeFromList} from '../helpers/followFunctions';
 
 const Series = props => {
-  const [index, setIndex] = React.useState(0);
+  const [index, setIndex] = useState(0);
   const [series, setSeries] = useState([]);
   const [currentSeries, setCurrentSeries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [switchValue, setSwitchValue] = useState(false);
-  const {theme, token} = useContext(AppContext);
+  const {theme, token, lista, setLista} = useContext(AppContext);
   useEffect(() => {
     props.navigation.setOptions({
       headerShown: false,
@@ -33,7 +35,7 @@ const Series = props => {
     axios
       .get(`${API}/lastAnimeSeries`, {
         headers: {
-            Authorization: token,
+          Authorization: token,
         },
       })
       .then(({data}) => {
@@ -187,13 +189,12 @@ const Series = props => {
                     source={{uri: serie.image}}
                     style={{width: 100, height: 100}}
                     onPress={() => {
-                      console.log("serie",serie)
                       props.navigation.navigate('Anime', {
                         anime: `${serie.url}1/`,
                         name: serie.name,
                         imagen: serie.image,
-                      })}
-                    }
+                      });
+                    }}
                   />
                   <ListItem.Content
                     style={{
@@ -212,6 +213,19 @@ const Series = props => {
                       {serie.estado}
                     </ListItem.Subtitle>
                   </ListItem.Content>
+                  {lista.find(item => item.name === serie.name) ? (
+                    <Button
+                      title={'Dejar de seguir'}
+                      onPress={() =>
+                        deleteAnimeFromList(serie.name, setLista, lista)
+                      }
+                    />
+                  ) : (
+                    <Button
+                      title={'Seguir'}
+                      onPress={() => addFollowAnime(serie, setLista, lista)}
+                    />
+                  )}
                 </ListItem>
               ))}
             </ScrollView>
