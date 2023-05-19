@@ -21,7 +21,7 @@ import AppContext from '../context/appContext';
 import {API} from '../api';
 const Login = props => {
   const [loading, setLoading] = useState(false);
-  const {setToken, setUserInfo, login, setLogin} = useContext(AppContext);
+  const {setToken, setUserInfo, login, setLogin,theme} = useContext(AppContext);
   const [message, setMessage] = useState('');
   const [email, setEmail] = useState('');
   useEffect(() => {
@@ -146,7 +146,8 @@ const Login = props => {
   if (loading) {
     return (
       <View style={styles.container}>
-        <ActivityIndicator size="large" color="#0000ff" />
+        <ActivityIndicator  style={{backgroundColor: theme === 'dark' ? '#232322' : '#F5F5F5'}}
+        size={40} color="#0000ff" />
         <Text>{message}</Text>
       </View>
     );

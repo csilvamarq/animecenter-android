@@ -5,17 +5,19 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {ScrollView} from 'react-native-gesture-handler';
 import {ListItem, Image, SearchBar} from '@rneui/themed';
 
-import Icon from 'react-native-vector-icons/AntDesign';
 import {API} from '../api';
 import {useContext} from 'react';
 import AppContext from '../context/appContext';
+import Icon from 'react-native-vector-icons/AntDesign';
+import {addFollowAnime} from '../helpers/followFunctions';
+import {ALERT_TYPE, Dialog} from 'react-native-alert-notification';
 
 const Search = props => {
   const [text, setText] = useState('');
   const [search, setSearch] = useState(false);
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
-  const {theme, token} = useContext(AppContext);
+  const {theme, token, lista, setLista} = useContext(AppContext);
 
   const getSearchResults = async text => {
     setLoading(true);
@@ -86,11 +88,44 @@ const Search = props => {
                     {serie.name}
                   </ListItem.Title>
                 </ListItem.Content>
+                {lista.length > 0 &&
+                lista.find(item => item.name === serie.name) ? (
+                  <Icon
+                    name="minuscircleo"
+                    size={25}
+                    onPress={() => {
+                      Dialog.show({
+                        type: ALERT_TYPE.SUCCESS,
+                        title: 'Anime eliminado de tu lista',
+                        textBody:
+                          'El anime ha sido eliminado de tu lista correctamente',
+                        button: 'Cerrar',
+                      });
+                      deleteAnimeFromList(serie.name, setLista, lista);
+                    }}
+                  />
+                ) : (
+                  <Icon
+                    name="pluscircleo"
+                    size={25}
+                    onPress={() => {
+                      Dialog.show({
+                        type: ALERT_TYPE.SUCCESS,
+                        title: 'Anime agregado a tu lista',
+                        textBody:
+                          'El anime ha sido agregado a tu lista correctamente',
+                        button: 'Cerrar',
+                      });
+                      addFollowAnime(serie, setLista, lista);
+                    }}
+                  />
+                )}
               </ListItem>
             ))}
           </>
         ) : loading ? (
-          <ActivityIndicator />
+          <ActivityIndicator  style={{backgroundColor: theme === 'dark' ? '#232322' : '#F5F5F5'}}
+          size={40} />
         ) : null}
       </ScrollView>
     </SafeAreaProvider>

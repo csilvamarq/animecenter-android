@@ -1,5 +1,11 @@
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {ScrollView, ActivityIndicator, View,RefreshControl} from 'react-native';
+import {
+  ScrollView,
+  ActivityIndicator,
+  View,
+  RefreshControl,
+  BackHandler,
+} from 'react-native';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import Icon2 from 'react-native-vector-icons/Ionicons';
@@ -7,12 +13,36 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {ListItem, Image} from '@rneui/themed';
 import {API} from '../api';
 import AppContext from '../context/appContext';
+import {useFocusEffect} from '@react-navigation/native';
+import { AlertNotificationRoot,Dialog,ALERT_TYPE } from 'react-native-alert-notification';
+import usePrevious from '../hooks/usePrevious';
 
 const List = props => {
   const [series, setSeries] = useState([]);
   const [loading, setLoading] = useState(true);
-  const {theme, token, setTheme} = useContext(AppContext);
-  const [refreshing, setRefreshing] = React.useState(false);
+  const {theme, token, setTheme,lista} = useContext(AppContext);
+  const [refreshing, setRefreshing] = useState(false);
+  const previousArray = usePrevious(lista);
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        return true;
+      };
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () =>
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    },[]),
+  );
+  // useEffect(() => {
+  //   if (lista.length)
+  //   Dialog.show({
+  //     type: ALERT_TYPE.SUCCESS,
+  //     title: 'Anime agregado a tu lista',
+  //     textBody: 'El anime ha sido agregado a tu lista correctamente',
+  //     button: 'Cerrar',
+  //   })
+  // },[lista])
   useEffect(() => {
     props.navigation.setOptions({
       headerStyle: {backgroundColor: theme === 'dark' ? '#232322' : '#F5F5F5'},
@@ -46,8 +76,8 @@ const List = props => {
       })
       .catch(error => console.error(error));
   }, [theme]);
-    const onRefresh = useCallback(() => {
-      setRefreshing(true);
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
     axios
       .get(`${API}/lastAnime`, {
         headers: {
@@ -59,7 +89,7 @@ const List = props => {
         setRefreshing(false);
       })
       .catch(error => console.error(error));
-    },[])
+  }, []);
   return loading && series.length < 1 ? (
     <>
       <ActivityIndicator
@@ -68,8 +98,10 @@ const List = props => {
       />
     </>
   ) : (
+    <AlertNotificationRoot>
     <SafeAreaProvider>
-      <ScrollView  refreshControl={
+      <ScrollView
+        refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
         {series.map((serie, i) => (
@@ -108,6 +140,7 @@ const List = props => {
         ))}
       </ScrollView>
     </SafeAreaProvider>
+    </AlertNotificationRoot>
   );
 };
 

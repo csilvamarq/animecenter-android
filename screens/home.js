@@ -28,7 +28,7 @@ const Home = props => {
         <View style={{display: 'flex', flexDirection: 'row'}}>
           <Icon2
             color={theme === 'dark' ? '#F5F5F5' : '#232322'}
-            size={30}
+            size={25}
             name={theme === 'dark' ? 'md-flashlight' : 'md-flashlight-outline'}
             onPress={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
           />
@@ -133,7 +133,7 @@ const Home = props => {
             />
           ),
         }}
-        name="Listas"
+        name="Lista"
         component={Lists}
       />
     </Drawer.Navigator>

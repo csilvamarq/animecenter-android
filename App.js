@@ -9,7 +9,6 @@ import 'react-native-gesture-handler';
 import {NavigationContainer} from '@react-navigation/native';
 import React, {useEffect} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import List from './screens/list';
 import Anime from './screens/anime';
 import Search from './screens/search';
 import SplashScreen from 'react-native-splash-screen';
@@ -30,11 +29,20 @@ const App = () => {
   const [lista, setLista] = useState([]);
   const [userInfo, setUserInfo] = useState({});
   useEffect(() => {
-    AsyncStorage.getItem('theme').then(
-      value => value !== null && setTheme(value),
-    );
+    AsyncStorage.getItem('lista').then(value => {
+      const parsedValue = JSON.parse(value);
+
+      if (parsedValue && parsedValue !== null && parsedValue["lista"] !== null) {
+        return parsedValue["lista"];
+      } else {
+        return [];
+      }
+    }),
+      AsyncStorage.getItem('theme').then(
+        value => value !== null && setTheme(value),
+      );
     SplashScreen.hide();
-  });
+  }, []);
   return (
     <AppContext.Provider
       value={{

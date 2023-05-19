@@ -80,7 +80,8 @@ const OptionSelector = props => {
           );
         })
       ) : (
-        <ActivityIndicator />
+        <ActivityIndicator  style={{backgroundColor: theme === 'dark' ? '#232322' : '#F5F5F5'}}
+        size={40} />
       )}
     </ScrollView>
   );

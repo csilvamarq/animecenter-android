@@ -28,6 +28,7 @@
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-native": "0.70.6",
+    "react-native-alert-notification": "^0.3.4",
     "react-native-dotenv": "^3.4.7",
     "react-native-dropdown-picker": "^5.4.4",
     "react-native-form-component": "^2.6.8",
@@ -45,9 +46,7 @@
     "react-native-vector-icons": "^9.1.0",
     "react-native-view-more-text": "^2.2.0",
     "react-native-web": "^0.18.12",
-    "react-native-webview": "^11.18.1",
-    "react-paginate": "^8.1.4",
-    "react-select": "^5.7.0"
+    "react-native-webview": "^11.18.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
