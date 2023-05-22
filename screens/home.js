@@ -12,6 +12,7 @@ import Search from './search';
 import Lists from './lists';
 import CustomSidebarMenu from '../components/customSidebarMenu';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { styles } from '../styles/styles';
 const Home = props => {
   const Drawer = createDrawerNavigator();
   const {theme, setTheme, userInfo,setLista} = useContext(AppContext);
@@ -21,7 +22,7 @@ const Home = props => {
     );
     props.navigation.setOptions({
       headerShown: false,
-      headerTitleStyle: {color: theme === 'dark' ? '#F5F5F5' : '#232322'},
+      headerTitleStyle: {...styles.titles, color: theme === 'dark' ? '#F5F5F5' : '#232322'},
       headerStyle: {backgroundColor: theme === 'dark' ? '#232322' : '#F5F5F5'},
       title: 'Animecenter2',
       headerRight: () => (

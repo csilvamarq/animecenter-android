@@ -21,6 +21,7 @@ import AppContext from '../context/appContext';
 import { Divider } from '@rneui/base';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { styles as global }  from '../styles/styles';
 
 const CustomSidebarMenu = (props) => {
 const {theme,setUserInfo,setLogin} = useContext(AppContext)
@@ -73,7 +74,7 @@ const styles = StyleSheet.create({
         source={{uri: props.userPhoto}}
         style={styles.sideMenuProfileIcon}
       />
-      <Text style={theme === "dark" ? styles.darkUserText : styles.userText}>{props.userName}</Text>
+      <Text style={{...global.titles,...styles.theme === "dark" ? styles.darkUserText : styles.userText}}>{props.userName}</Text>
       </View>
       </ImageBackground>
       <DrawerContentScrollView {...props}>
@@ -89,7 +90,7 @@ const styles = StyleSheet.create({
          setLogin(false)
          props.navigation.navigate("Login")
       }} name="sign-out" size={25} />
-      <Text style={{color : theme === "dark" ? "white" : "black",marginLeft : 10}}>Logout</Text>
+      <Text style={{...global.SubTitle,color : theme === "dark" ? "white" : "black",marginLeft : 10}}>Logout</Text>
       </View>
       <Text
         style={{

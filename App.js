@@ -19,6 +19,7 @@ import {useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import OptionSelector from './screens/option';
 import Login from './screens/login';
+import { styles } from './styles/styles';
 
 const Stack = createNativeStackNavigator();
 

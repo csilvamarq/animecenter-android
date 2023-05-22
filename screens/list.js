@@ -16,6 +16,7 @@ import AppContext from '../context/appContext';
 import {useFocusEffect} from '@react-navigation/native';
 import { AlertNotificationRoot,Dialog,ALERT_TYPE } from 'react-native-alert-notification';
 import usePrevious from '../hooks/usePrevious';
+import { styles } from '../styles/styles';
 
 const List = props => {
   const [series, setSeries] = useState([]);
@@ -45,6 +46,7 @@ const List = props => {
   // },[lista])
   useEffect(() => {
     props.navigation.setOptions({
+      headerTitleStyle: {...styles.header, color: theme === 'dark' ? '#F5F5F5' : '#232322'},
       headerStyle: {backgroundColor: theme === 'dark' ? '#232322' : '#F5F5F5'},
       title: 'Anime',
       headerRight: () => (
@@ -128,11 +130,11 @@ const List = props => {
                 backgroundColor: theme === 'dark' ? '#232322' : '#F5F5F5',
               }}>
               <ListItem.Title
-                style={{color: theme === 'dark' ? '#F5F5F5' : '#232322'}}>
+                style={{...styles.titles,color: theme === 'dark' ? '#F5F5F5' : '#232322'}}>
                 {serie.name}
               </ListItem.Title>
               <ListItem.Subtitle
-                style={{color: theme === 'dark' ? '#F5F5F5' : '#232322'}}>
+                style={{...styles.SubTitle,color: theme === 'dark' ? '#F5F5F5' : '#232322'}}>
                 Episodio {serie.episode}
               </ListItem.Subtitle>
             </ListItem.Content>
