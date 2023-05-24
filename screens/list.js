@@ -14,7 +14,7 @@ import {ListItem, Image} from '@rneui/themed';
 import {API} from '../api';
 import AppContext from '../context/appContext';
 import {useFocusEffect} from '@react-navigation/native';
-import { AlertNotificationRoot,Dialog,ALERT_TYPE } from 'react-native-alert-notification';
+import { AlertNotificationRoot } from 'react-native-alert-notification';
 import usePrevious from '../hooks/usePrevious';
 import { styles } from '../styles/styles';
 
@@ -35,15 +35,6 @@ const List = props => {
         BackHandler.removeEventListener('hardwareBackPress', onBackPress);
     },[]),
   );
-  // useEffect(() => {
-  //   if (lista.length)
-  //   Dialog.show({
-  //     type: ALERT_TYPE.SUCCESS,
-  //     title: 'Anime agregado a tu lista',
-  //     textBody: 'El anime ha sido agregado a tu lista correctamente',
-  //     button: 'Cerrar',
-  //   })
-  // },[lista])
   useEffect(() => {
     props.navigation.setOptions({
       headerTitleStyle: {...styles.header, color: theme === 'dark' ? '#F5F5F5' : '#232322'},

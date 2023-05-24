@@ -232,7 +232,7 @@ const Series = props => {
                         color={ theme === 'dark' ? '#F5F5F5' : '#232322'}
                         size={25}
                         onPress={() => {
-                          Dialog.show({
+                          Toast.show({
                             type: ALERT_TYPE.SUCCESS,
                             title: 'Anime eliminado de tu lista',
                             textBody: 'El anime ha sido eliminado de tu lista correctamente',
@@ -247,7 +247,7 @@ const Series = props => {
                         name="pluscircleo"
                         size={25}
                         onPress={() => {
-                          Dialog.show({
+                          Toast.show({
                             type: ALERT_TYPE.SUCCESS,
                             title: 'Anime agregado a tu lista',
                             textBody: 'El anime ha sido agregado a tu lista correctamente',

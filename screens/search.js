@@ -10,7 +10,8 @@ import {useContext} from 'react';
 import AppContext from '../context/appContext';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {addFollowAnime} from '../helpers/followFunctions';
-import {ALERT_TYPE, Dialog} from 'react-native-alert-notification';
+import {ALERT_TYPE, Toast} from 'react-native-alert-notification';
+import {styles as global} from '../styles/styles'
 
 const Search = props => {
   const [text, setText] = useState('');
@@ -57,7 +58,7 @@ const Search = props => {
         style={{backgroundColor: theme === 'dark' ? '#232322' : '#F5F5F5'}}>
         {search ? (
           <>
-            <Text style={{color: theme === 'dark' ? '#F5F5F5' : '#232322'}}>
+            <Text style={{ ...global.Text,color: theme === 'dark' ? '#F5F5F5' : '#232322'}}>
               {' '}
               se han encontrado {results.length} resultados
             </Text>
@@ -84,7 +85,7 @@ const Search = props => {
                     backgroundColor: theme === 'dark' ? '#232322' : '#F5F5F5',
                   }}>
                   <ListItem.Title
-                    style={{color: theme === 'dark' ? '#F5F5F5' : '#232322'}}>
+                    style={{ ...global.titles,color: theme === 'dark' ? '#F5F5F5' : '#232322'}}>
                     {serie.name}
                   </ListItem.Title>
                 </ListItem.Content>
@@ -94,7 +95,7 @@ const Search = props => {
                     name="minuscircleo"
                     size={25}
                     onPress={() => {
-                      Dialog.show({
+                      Toast.show({
                         type: ALERT_TYPE.SUCCESS,
                         title: 'Anime eliminado de tu lista',
                         textBody:
@@ -109,7 +110,7 @@ const Search = props => {
                     name="pluscircleo"
                     size={25}
                     onPress={() => {
-                      Dialog.show({
+                      Toast.show({
                         type: ALERT_TYPE.SUCCESS,
                         title: 'Anime agregado a tu lista',
                         textBody:

@@ -16,6 +16,7 @@ import {API} from '../api';
 import {useContext} from 'react';
 import AppContext from '../context/appContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {styles as global} from '../styles/styles';
 
 const Anime = props => {
   const [episodes, setEpisodes] = useState([]);
@@ -30,69 +31,6 @@ const Anime = props => {
       ? props.route.params.url.lastIndexOf(`-sub`)
       : props.route.params.anime.lastIndexOf(`-episodio`);
   useEffect(() => {
-    setEpisodes([]);
-    props.navigation.setOptions({
-      title: props.route.params.name,
-      headerTitleStyle: {color: theme === 'dark' ? '#F5F5F5' : '#232322'},
-      headerStyle: {backgroundColor: theme === 'dark' ? '#232322' : '#F5F5F5'},
-      headerRight: () => (
-        <>
-          {lista.find(item => item.name === props.route.params.name) ===
-          undefined ? (
-            <Button
-              onPress={() => {
-                const list = [...lista];
-                const anime = {
-                  name: props.route.params.name,
-                  url: props.route.params.url
-                    ? props.route.params.url
-                    : props.route.params.anime,
-                  image: props.route.params.imagen,
-                  info,
-                };
-                list.push(anime);
-                setLista(list);
-                AsyncStorage.setItem('lista', JSON.stringify(list)).then(
-                  data => data,
-                );
-              }}
-              radius={'sm'}
-              color={theme ? '#232322' : '#F5F5F5'}
-              style={styles.followButton}>
-              Seguir
-              <Icon
-                size={40}
-                color={theme ? '#F5F5F5' : '#232322'}
-                name="plus"
-              />
-            </Button>
-          ) : (
-            <Button
-              onPress={() => {
-                const list = [...lista];
-                list.splice(
-                  list.findIndex(item => item.name === props.route.params.name),
-                  1,
-                );
-                setLista(list);
-                AsyncStorage.setItem('lista', JSON.stringify(list)).then(
-                  data => data,
-                );
-              }}
-              radius={'sm'}
-              color={theme ? '#232322' : '#F5F5F5'}
-              style={styles.followButton}>
-              Dejar de Seguir
-              <Icon
-                size={40}
-                color={theme ? '#F5F5F5' : '#232322'}
-                name="plus"
-              />
-            </Button>
-          )}
-        </>
-      ),
-    });
     axios
       .get(
         `${API}/episodes/${
@@ -113,6 +51,77 @@ const Anime = props => {
           setInfo(response.data.info);
           setLoading(false);
           IsEmpty(false);
+          props.navigation.setOptions({
+            title: props.route.params.name,
+            headerTitleStyle: {
+              ...global.header,
+              color: theme === 'dark' ? '#F5F5F5' : '#232322',
+            },
+            headerStyle: {
+              backgroundColor: theme === 'dark' ? '#232322' : '#F5F5F5',
+            },
+            headerRight: () => (
+              <>
+                {lista.find(item => item.name === props.route.params.name) ===
+                undefined ? (
+                  <Button
+                    onPress={() => {
+                      const list = [...lista];
+                      const anime = {
+                        name: props.route.params.name,
+                        url: props.route.params.url
+                          ? props.route.params.url
+                          : props.route.params.anime,
+                        image: props.route.params.imagen,
+                        info,
+                        episodes: response.data.episodes.length,
+                        currentEp: 1,
+                      };
+                      list.push(anime);
+                      setLista(list);
+                      AsyncStorage.setItem('lista', JSON.stringify(list)).then(
+                        data => data,
+                      );
+                    }}
+                    radius={'sm'}
+                    color={theme ? '#232322' : '#F5F5F5'}
+                    style={{...global.titles, ...styles.followButton}}>
+                    Seguir
+                    <Icon
+                      size={40}
+                      color={theme ? '#F5F5F5' : '#232322'}
+                      name="plus"
+                    />
+                  </Button>
+                ) : (
+                  <Button
+                    onPress={() => {
+                      const list = [...lista];
+                      list.splice(
+                        list.findIndex(
+                          item => item.name === props.route.params.name,
+                        ),
+                        1,
+                      );
+                      setLista(list);
+                      AsyncStorage.setItem('lista', JSON.stringify(list)).then(
+                        data => data,
+                      );
+                    }}
+                    radius={'sm'}
+                    color={theme ? '#232322' : '#F5F5F5'}
+                    style={{...global.titles, ...styles.followButton}}>
+                    Dejar de Seguir
+                    <Icon
+                      size={40}
+                      color={theme ? '#F5F5F5' : '#232322'}
+                      name="plus"
+                    />
+                  </Button>
+                )}
+              </>
+            ),
+          });
         } else {
           IsEmpty(true);
         }
@@ -143,7 +152,11 @@ const Anime = props => {
             source={{uri: props.route.params.imagen}}
             style={styles.image}
           />
-          <Text style={{color: theme === 'dark' ? '#F5F5F5' : '#232322'}}>
+          <Text
+            style={{
+              ...global.SubTitle,
+              color: theme === 'dark' ? '#F5F5F5' : '#232322',
+            }}>
             {info.descripcion}
           </Text>
           <FlatGrid
@@ -158,6 +171,7 @@ const Anime = props => {
               <View style={styles.itemContainer}>
                 <Text
                   style={{
+                    ...global.titles,
                     ...styles.itemName,
                     color: theme === 'dark' ? '#F5F5F5' : '#232322',
                   }}>
@@ -165,6 +179,7 @@ const Anime = props => {
                 </Text>
                 <Text
                   style={{
+                    ...global.Text,
                     ...styles.itemCode,
                     color: theme === 'dark' ? '#F5F5F5' : '#232322',
                   }}>
@@ -175,6 +190,7 @@ const Anime = props => {
           />
           <Text
             style={{
+              ...global.SubTitle,
               marginBottom: 10,
               fontSize: 30,
               color: theme === 'dark' ? '#F5F5F5' : '#232322',
@@ -186,10 +202,12 @@ const Anime = props => {
             {info.score}
           </Text>
         </Card>
-        {episodes.map((episode, i) => (
+        {episodes.map((episode, i) => {
+          const episodesArr = Array.from({ length: lista.find((item)=> item.name === props.route.params.name).currentEp }, (_, index) => index + 1);
+          return (
           <ListItem
             containerStyle={{
-              backgroundColor: theme === 'dark' ? '#232322' : '#F5F5F5',
+              backgroundColor: theme === 'dark' ? ((episodesCount - 1) * 30 + i + 1) === episodesArr[i] ?  "grey": '#232322' : ((episodesCount - 1) * 30 + i + 1) === episodesArr[i] ? "grey" : '#F5F5F5',
             }}
             style={styles.episodeContainer}
             key={i}
@@ -207,15 +225,19 @@ const Anime = props => {
             />
             <ListItem.Content
               style={{
-                backgroundColor: theme === 'dark' ? '#232322' : '#F5F5F5',
+                backgroundColor: theme === 'dark' ? ((episodesCount - 1) * 30 + i + 1) === episodesArr[i] ?  "grey": '#232322' : ((episodesCount - 1) * 30 + i + 1) === episodesArr[i] ? "grey" : '#F5F5F5',
               }}>
               <ListItem.Title
-                style={{color: theme === 'dark' ? '#F5F5F5' : '#232322'}}>
+                style={{
+                  ...global.Text,
+                  color: theme === 'dark' ? '#F5F5F5' : '#232322',
+                }}>
                 episodio {(episodesCount - 1) * 30 + i + 1}
               </ListItem.Title>
+              <Text style={{ color: theme === 'dark' ? '#F5F5F5' : '#232322',}}>{((episodesCount - 1) * 30 + i + 1) === episodesArr[i] ? "visto" : "no visto"}</Text>
             </ListItem.Content>
           </ListItem>
-        ))}
+        )})}
         <View
           style={{
             display: 'flex',

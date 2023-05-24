@@ -4,14 +4,21 @@ import React, {useContext, useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, View, Text} from 'react-native';
 import AppContext from '../context/appContext';
 import Icon from 'react-native-vector-icons/EvilIcons';
-import {deleteAnimeFromList} from '../helpers/followFunctions';
+import {
+  UpdateAnimeField,
+  deleteAnimeFromList,
+} from '../helpers/followFunctions';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {styles as global} from '../styles/styles';
+import NumericInput from 'react-native-numeric-input';
 
 const ListaAnime = props => {
   const {theme, lista, setLista} = useContext(AppContext);
   useEffect(() => {
     props.navigation.setOptions({
-      headerStyle: {backgroundColor: theme === 'dark' ? '#232322' : '#F5F5F5'},
+      headerStyle: {
+        backgroundColor: theme === 'dark' ? '#232322' : '#F5F5F5',
+      },
     });
   });
   return (
@@ -36,15 +43,51 @@ const ListaAnime = props => {
                     backgroundColor: theme === 'dark' ? '#232322' : '#F5F5F5',
                   }}>
                   <ListItem.Title
-                    style={{color: theme === 'dark' ? '#F5F5F5' : '#232322'}}>
+                    style={{
+                      ...global.titles,
+                      color: theme === 'dark' ? '#F5F5F5' : '#232322',
+                    }}>
                     {serie.name}
                   </ListItem.Title>
+                  <ListItem.Subtitle
+                    style={{
+                      ...global.Text,
+                      textAlign: 'center',
+                      color: theme === 'dark' ? '#F5F5F5' : '#232322',
+                    }}>
+                    Episodio
+                  </ListItem.Subtitle>
+                  <View style={{flex: 1, flexDirection: 'row'}}>
+                    <NumericInput
+                      onChange={value => {
+                        UpdateAnimeField(
+                          serie.name,
+                          {currentEp: value},
+                          setLista,
+                          lista,
+                        );
+                      }}
+                      minValue={1}
+                      value={serie.currentEp}
+                      maxValue={serie.episodes}
+                      totalWidth={50}
+                      totalHeight={30}
+                      iconSize={25}
+                      step={1}
+                      valueType="real"
+                      rounded
+                      textColor="#B0228C"
+                      iconStyle={{color: 'white'}}
+                      rightButtonBackgroundColor="#000000"
+                      leftButtonBackgroundColor="#232322"
+                    />
+                    <Text>{` de ${serie.episodes}`}</Text>
+                  </View>
                 </ListItem.Content>
                 <Icon
-                color={ theme === 'dark' ? '#F5F5F5' : '#232322'}
+                  color={theme === 'dark' ? '#F5F5F5' : '#232322'}
                   name="trash"
                   onPress={() =>
-                    
                     deleteAnimeFromList(serie.name, setLista, lista)
                   }
                   size={25}
@@ -60,6 +103,7 @@ const ListaAnime = props => {
             }}>
             <Text
               style={{
+                ...global.SubTitle,
                 ...style.EmptyListText,
                 color: theme === 'dark' ? '#F5F5F5' : '#232322',
               }}>

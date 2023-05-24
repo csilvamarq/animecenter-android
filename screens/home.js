@@ -46,7 +46,7 @@ const Home = props => {
   return (
     <Drawer.Navigator
       screenOptions={({navigation}) => ({
-        headerTitleStyle: {color: theme === 'dark' ? '#F5F5F5' : '#232322'},
+        headerTitleStyle: {...styles.titles,color: theme === 'dark' ? '#F5F5F5' : '#232322'},
         headerLeft: props => (
           <Icon2
             color={theme === 'dark' ? '#F5F5F5' : '#232322'}
@@ -56,8 +56,9 @@ const Home = props => {
           />
         ),
       })}
+      
       drawerContent={props => (
-        <CustomSidebarMenu
+        <CustomSidebarMenu 
           userName={
             userInfo ? `${userInfo.user.givenName}` : 'Bienvenido Admin'
           }
@@ -71,7 +72,7 @@ const Home = props => {
       )}>
       <Drawer.Screen
         options={{
-          drawerLabelStyle: {color: theme === 'dark' ? '#F5F5F5' : '#232322'},
+          drawerLabelStyle: {...styles.titles,color: theme === 'dark' ? '#F5F5F5' : '#232322'},
           drawerStyle: {
             backgroundColor: theme === 'dark' ? '#232322' : '#F5F5F5',
           },
@@ -88,7 +89,7 @@ const Home = props => {
       />
       <Drawer.Screen
         options={{
-          drawerLabelStyle: {color: theme === 'dark' ? '#F5F5F5' : '#232322'},
+          drawerLabelStyle: {...styles.titles,color: theme === 'dark' ? '#F5F5F5' : '#232322'},
           drawerStyle: {
             backgroundColor: theme === 'dark' ? '#232322' : '#F5F5F5',
           },
@@ -105,7 +106,7 @@ const Home = props => {
       />
       <Drawer.Screen
         options={{
-          drawerLabelStyle: {color: theme === 'dark' ? '#F5F5F5' : '#232322'},
+          drawerLabelStyle: {...styles.titles,color: theme === 'dark' ? '#F5F5F5' : '#232322'},
           drawerStyle: {
             backgroundColor: theme === 'dark' ? '#232322' : '#F5F5F5',
           },
@@ -122,7 +123,7 @@ const Home = props => {
       />
       <Drawer.Screen
         options={{
-          drawerLabelStyle: {color: theme === 'dark' ? '#F5F5F5' : '#232322'},
+          drawerLabelStyle: {...styles.titles,color: theme === 'dark' ? '#F5F5F5' : '#232322'},
           drawerStyle: {
             backgroundColor: theme === 'dark' ? '#232322' : '#F5F5F5',
           },
