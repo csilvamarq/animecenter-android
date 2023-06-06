@@ -67,7 +67,7 @@ const ListaAnime = props => {
                           lista,
                         );
                       }}
-                      minValue={1}
+                      minValue={0}
                       value={serie.currentEp}
                       maxValue={serie.episodes}
                       totalWidth={50}

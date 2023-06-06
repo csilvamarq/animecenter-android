@@ -75,7 +75,7 @@ const Anime = props => {
                         image: props.route.params.imagen,
                         info,
                         episodes: response.data.episodes.length,
-                        currentEp: 1,
+                        currentEp: 0,
                       };
                       list.push(anime);
                       setLista(list);
@@ -203,7 +203,7 @@ const Anime = props => {
           </Text>
         </Card>
         {episodes.map((episode, i) => {
-          const episodesArr = Array.from({ length: lista.find((item)=> item.name === props.route.params.name).currentEp }, (_, index) => index + 1);
+          const episodesArr = Array.from({ length: lista.find((item)=> item.name === props.route.params.name)?.currentEp }, (_, index) => index + 1);
           return (
           <ListItem
             containerStyle={{
