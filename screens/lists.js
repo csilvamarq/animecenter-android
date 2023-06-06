@@ -67,7 +67,7 @@ const ListaAnime = props => {
                           lista,
                         );
                       }}
-                      minValue={1}
+                      minValue={0}
                       value={serie.currentEp}
                       maxValue={serie.episodes}
                       totalWidth={50}
@@ -81,7 +81,12 @@ const ListaAnime = props => {
                       rightButtonBackgroundColor="#000000"
                       leftButtonBackgroundColor="#232322"
                     />
-                    <Text>{` de ${serie.episodes}`}</Text>
+                    <Text
+                      style={{
+                        ...global.Text,
+                        textAlign: 'center',
+                        color: theme === 'dark' ? '#F5F5F5' : '#232322',
+                      }}>{` de ${serie.episodes}`}</Text>
                   </View>
                 </ListItem.Content>
                 <Icon
