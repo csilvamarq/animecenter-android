@@ -197,9 +197,9 @@ const Anime = props => {
             }}>
             Puntuación
           </Text>
-          <Star score={Math.floor(info.score)} />
+          <Star score={Math.floor(info?.score)} />
           <Text style={{marginBottom: 10, color: '#ffdf00', fontSize: 30}}>
-            {info.score}
+            {info?.score}
           </Text>
         </Card>
         {episodes.map((episode, i) => {

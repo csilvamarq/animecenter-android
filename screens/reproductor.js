@@ -99,6 +99,17 @@ const Player = props => {
     );
     return () => backHandler.remove();
   }, [currentEpisode]);
+  const handleShouldStartLoadWithRequest = request => {
+    // Verificar la URL del enlace
+    const url = request.url.toLowerCase();
+
+    // Bloquear enlaces que abran el navegador
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      return false;
+    }
+
+    return true; // Permitir cargar la URL
+  };
   const injectedJavaScript = `
   // Busca y elimina todos los elementos <iframe>
     function removeIFrames() {
@@ -124,6 +135,7 @@ const Player = props => {
   ) : (
     <>
       <WebView
+        onShouldStartLoadWithRequest={handleShouldStartLoadWithRequest}
         thirdPartyCookiesEnabled={false}
         mediaPlaybackRequiresUserAction={false}
         injectedJavaScript={injectedJavaScript}
